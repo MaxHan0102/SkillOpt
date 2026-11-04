@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from reproduction.prepare_official_data import BENCHMARKS, digest, prepare  # noqa: E402
+from reproduction.trajectory_compat import install_mapped_trajectory_reader  # noqa: E402
 
 REPRO = ROOT / "reproduction"
 SOCKET = REPRO / ".cache/experiments.sock"
@@ -125,6 +126,8 @@ def collect(run_dir: Path, benchmark: str) -> dict:
     for name, key in (("baseline", "baseline_test_hard"), ("best", "test_hard"), ("final", "final_test_hard")):
         if abs(results[name]["hard"] - summary[key]) > 1e-12:
             raise ValueError(f"Summary aggregation mismatch: {name}")
+    if summary["total_steps"] and not summary.get("token_summary", {}).get("analyst", {}).get("calls", 0):
+        raise ValueError("No analyst model calls recorded; full reflection workflow was not exercised")
     report = {
         "benchmark": benchmark, "model": MODEL, "reasoning_effort": "high",
         "completed_at": now(), "test": results,
@@ -161,10 +164,12 @@ def worker(benchmark: str, run_root: Path) -> None:
                 "model": MODEL, "reasoning_effort": "high", "started_at": now(),
                 "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                 "config": str(config.relative_to(ROOT)), "config_sha256": digest(config),
+                "mapped_trajectory_reader": True,
                 "data": provenance, "python": sys.version,
             })
             subprocess.run([sys.executable, "-m", "pip", "freeze"], stdout=(directory / "requirements.txt").open("w"), check=True)
             install_request_audit(directory / "request_metadata.jsonl")
+            install_mapped_trajectory_reader()
             phase("training_and_evaluation")
             from scripts import train
 
@@ -218,7 +223,7 @@ def status(run_root: Path) -> None:
         state = json.loads((directory / "status.json").read_text()) if (directory / "status.json").exists() else {"phase": "starting"}
         history = json.loads((directory / "history.json").read_text()) if (directory / "history.json").exists() else []
         alive = tmux_alive(item["session"])
-        if not alive and state["phase"] not in ("completed", "completed_with_errors", "failed"):
+        if not alive and state["phase"] not in ("completed", "completed_with_errors", "completed_with_reflection_issue", "failed"):
             state["phase"] = "interrupted"
         print(json.dumps({"benchmark": benchmark, "session_alive": alive, "completed_steps": len(history), **state}, ensure_ascii=False))
 

@@ -1,0 +1,8 @@
+{
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "all_requests_match": true,
+  "attempts": 13383,
+  "first_request": "2026-11-04T15:46:13+08:00",
+  "last_request": "2026-11-04T18:43:27+08:00"
+}

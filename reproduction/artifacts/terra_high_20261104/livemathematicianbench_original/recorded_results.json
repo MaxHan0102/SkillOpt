@@ -1,0 +1,61 @@
+{
+  "benchmark": "livemathematicianbench",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "completed_at": "2026-11-04T16:23:09+08:00",
+  "test": {
+    "baseline": {
+      "n": 125,
+      "hard": 0.576,
+      "soft": 0.576,
+      "api_failures": 0
+    },
+    "best": {
+      "n": 125,
+      "hard": 0.712,
+      "soft": 0.712,
+      "api_failures": 0
+    },
+    "final": {
+      "n": 125,
+      "hard": 0.712,
+      "soft": 0.712,
+      "api_failures": 0,
+      "reused_from": "best"
+    }
+  },
+  "baseline_selection_hard": 0.8235294117647058,
+  "best_selection_hard": 1.0,
+  "total_steps": 4,
+  "total_accepts": 0,
+  "total_rejects": 0,
+  "token_summary": {
+    "meta_skill": {
+      "calls": 3,
+      "prompt_tokens": 44313,
+      "completion_tokens": 905,
+      "total_tokens": 45218
+    },
+    "rollout": {
+      "calls": 544,
+      "prompt_tokens": 623042,
+      "completion_tokens": 212063,
+      "total_tokens": 835105
+    },
+    "slow_update": {
+      "calls": 3,
+      "prompt_tokens": 45178,
+      "completion_tokens": 1416,
+      "total_tokens": 46594
+    },
+    "_total": {
+      "calls": 550,
+      "prompt_tokens": 712533,
+      "completion_tokens": 214384,
+      "total_tokens": 926917
+    }
+  },
+  "total_wall_time_s": 1912.8,
+  "workflow_status": "completed_with_reflection_issue",
+  "limitation": "原运行受上游轨迹路径兼容问题影响：4 个常规更新步骤均未实际调用反思模型。71.2% 测试准确率来自包含慢更新的受限流程，不能作为完整优化复现结果。修复后的实验独立重跑，原始记录保留。"
+}

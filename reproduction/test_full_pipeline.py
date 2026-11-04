@@ -8,7 +8,10 @@ import pytest
 from openai import OpenAI
 
 from reproduction import run_experiments as runner
+from reproduction.trajectory_compat import install_mapped_trajectory_reader
 from skillopt.config import flatten_config, load_config
+from skillopt.envs.task_output import task_output_segment
+from skillopt.gradient import reflect
 from skillopt.model import azure_openai
 
 
@@ -78,7 +81,7 @@ def test_final_test_reuse_requires_identical_skill_bytes(tmp_path, monkeypatch, 
         "baseline_test_hard": 1.0, "test_hard": 1.0, "final_test_hard": 1.0,
         "baseline_selection_hard": 0.5, "best_selection_hard": 1.0,
         "total_steps": 2, "total_accepts": 1, "total_rejects": 1,
-        "token_summary": {}, "total_wall_time_s": 1.0,
+        "token_summary": {"analyst": {"calls": 1}}, "total_wall_time_s": 1.0,
     }
     (run / "summary.json").write_text(json.dumps(summary))
     (run / "best_skill.md").write_text("best")
@@ -96,3 +99,40 @@ def test_final_test_reuse_requires_identical_skill_bytes(tmp_path, monkeypatch, 
     else:
         with pytest.raises(ValueError, match="distinct final skill"):
             runner.collect(run, "searchqa")
+
+
+def test_mapped_math_trajectory_reaches_the_analyst_with_original_id(tmp_path, monkeypatch):
+    task_id = "202602:22"
+    directory = tmp_path / task_output_segment(task_id, map_unsafe=True)
+    directory.mkdir()
+    (directory / "conversation.json").write_text(json.dumps([{"content": "<answer>B</answer>"}]))
+    (directory / "target_user_prompt.txt").write_text("Full math question and choices")
+    item = {"id": task_id, "hard": 0, "n_turns": 1, "fail_reason": "Wrong answer"}
+    assert reflect.fmt_minibatch_trajectories([item], str(tmp_path)) == ""
+    monkeypatch.setattr(reflect, "fmt_minibatch_trajectories", reflect.fmt_minibatch_trajectories)
+    install_mapped_trajectory_reader()
+    calls = []
+
+    def analyst(**kwargs):
+        calls.append(kwargs)
+        return json.dumps({"patch": {"edits": [{"op": "add", "content": "Inspect every choice"}]}}), {}
+
+    monkeypatch.setattr(reflect, "chat_optimizer", analyst)
+    result = reflect.run_error_analyst_minibatch("# Skill", [item], str(tmp_path))
+    assert result["patch"]["edits"]
+    assert len(calls) == 1
+    prompt = calls[0]["user"]
+    assert f"(id={task_id})" in prompt
+    assert "<answer>B</answer>" in prompt and "Full math question and choices" in prompt
+    assert item["id"] == task_id
+
+
+def test_safe_id_reflection_prompt_remains_byte_identical(tmp_path, monkeypatch):
+    directory = tmp_path / "safe-id"
+    directory.mkdir()
+    (directory / "conversation.json").write_text(json.dumps([{"content": "answer"}]))
+    items = [{"id": "safe-id", "n_turns": 1}]
+    expected = reflect.fmt_minibatch_trajectories(items, str(tmp_path))
+    monkeypatch.setattr(reflect, "fmt_minibatch_trajectories", reflect.fmt_minibatch_trajectories)
+    install_mapped_trajectory_reader()
+    assert reflect.fmt_minibatch_trajectories(items, str(tmp_path)) == expected

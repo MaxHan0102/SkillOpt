@@ -48,6 +48,10 @@ conda activate /root/max/SkillOpt/reproduction/.conda/max-skillopt
   数据位置，以及每任务 4 个 rollout worker、2 个 analyst worker、600 秒超时。
 - `test_full_pipeline.py`：离线验证两个模型角色的实际 HTTP 请求携带 High，
   请求审计不含提示词或密钥，并检查完整划分与训练开关。
+- `trajectory_compat.py`：修复上游反思读取器与安全目录命名的兼容问题。
+  LiveMath 的 `202602:22` 等 ID 会被 rollout 映射为 `_mapped-<sha256>` 目录，
+  复现层按同一映射读取轨迹，并在分析提示词中保留原始 ID。
+  普通 SearchQA ID 的分析提示词保持字节一致；不修改官方源文件。
 
 ## 网关与 High 推理
 
@@ -106,6 +110,11 @@ tail -f reproduction/outputs/terra_high_20261104/livemathematicianbench/console.
 `completed_with_errors`，进程异常显示 `failed`，会话意外退出显示 `interrupted`。
 `preparing_data` 和 `training_and_evaluation` 均表示尚未完成，不能作为复现结果。
 模型随机性、API 错误及超时会影响结果；本次数据 seed 保持官方默认 42。
+没有任何 analyst 模型调用的运行也会被阻止标为完整流程成功。
+
+2026-11-04 首次数学运行受上述路径兼容问题影响，虽然完成测试，反思环节并未
+实际调用优化模型；其 71.2% 只记录为受限旧结果。修复后的数学实验使用独立目录
+`reproduction/outputs/terra_high_20261104_reflection_fix/` 重跑，保留原记录。
 
 ```bash
 $PY -m pytest -q reproduction/test_full_pipeline.py \

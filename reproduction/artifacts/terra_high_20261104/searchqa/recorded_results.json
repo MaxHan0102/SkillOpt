@@ -1,0 +1,76 @@
+{
+  "benchmark": "searchqa",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "completed_at": "2026-11-04T18:43:32+08:00",
+  "test": {
+    "baseline": {
+      "n": 1400,
+      "hard": 0.7585714285714286,
+      "soft": 0.8781931763933629,
+      "api_failures": 0
+    },
+    "best": {
+      "n": 1400,
+      "hard": 0.8392857142857143,
+      "soft": 0.917275510204081,
+      "api_failures": 0
+    },
+    "final": {
+      "n": 1400,
+      "hard": 0.8442857142857143,
+      "soft": 0.9211853741496591,
+      "api_failures": 0
+    }
+  },
+  "baseline_selection_hard": 0.7,
+  "best_selection_hard": 0.82,
+  "total_steps": 40,
+  "total_accepts": 3,
+  "total_rejects": 33,
+  "token_summary": {
+    "analyst": {
+      "calls": 232,
+      "prompt_tokens": 3185347,
+      "completion_tokens": 47126,
+      "total_tokens": 3232473
+    },
+    "merge": {
+      "calls": 13,
+      "prompt_tokens": 14198,
+      "completion_tokens": 4624,
+      "total_tokens": 18822
+    },
+    "meta_skill": {
+      "calls": 3,
+      "prompt_tokens": 12353,
+      "completion_tokens": 688,
+      "total_tokens": 13041
+    },
+    "ranking": {
+      "calls": 1,
+      "prompt_tokens": 1103,
+      "completion_tokens": 154,
+      "total_tokens": 1257
+    },
+    "rollout": {
+      "calls": 13120,
+      "prompt_tokens": 20647891,
+      "completion_tokens": 216354,
+      "total_tokens": 20864245
+    },
+    "slow_update": {
+      "calls": 3,
+      "prompt_tokens": 13240,
+      "completion_tokens": 1279,
+      "total_tokens": 14519
+    },
+    "_total": {
+      "calls": 13372,
+      "prompt_tokens": 23874132,
+      "completion_tokens": 270225,
+      "total_tokens": 24144357
+    }
+  },
+  "total_wall_time_s": 10495.4
+}
