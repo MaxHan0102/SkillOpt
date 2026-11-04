@@ -1,0 +1,4 @@
+{"id": "5b3b5778cbbf480d8faa1558da5075ad", "hard": 1, "soft": 1.0, "predicted_answer": "William Bradford", "gold_answers": ["William Bradford"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "6651ec8baf2a42e0b2f704c9b38a2044", "hard": 1, "soft": 1.0, "predicted_answer": "Hemingway", "gold_answers": ["Hemingway"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "7b1bc47134d249feac8d44365ce0e562", "hard": 1, "soft": 1.0, "predicted_answer": "Guadalajara", "gold_answers": ["Guadalajara"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "8da4cdbf5ede473e80797b67e8869735", "hard": 1, "soft": 1.0, "predicted_answer": "Stephen Vincent Benet", "gold_answers": ["Stephen Vincent Benet"], "agent_ok": true, "fail_reason": "", "n_turns": 1}

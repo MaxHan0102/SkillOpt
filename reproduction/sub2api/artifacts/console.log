@@ -1,0 +1,185 @@
+
+============================================================
+  SkillOpt — Executive Strategy for Self-Evolving Agent Skills
+============================================================
+  env:            searchqa
+  optimizer_model:  gpt-6.1-sol
+  target_model:  gpt-6.1-sol
+  optimizer_backend:openai_compatible
+  target_backend:openai_compatible
+  reasoning:      medium
+  rewrite_effort: off
+  epochs:         1
+  train_size:     8
+  steps/epoch:    auto
+  batch_size:     4
+  edit_budget:    2
+  lr_scheduler:   cosine
+  update_mode:    patch
+  min_edit_budget:1
+  minibatch_size: 4
+  seed:           42
+  meta_skill:     True
+  skill_aware_reflection: False
+  slow_update:    True
+  out_root:       <REPO>/outputs/sub2api_smoke_20261104
+============================================================
+
+  [SearchQADataLoader] train=8 val=4 test=8  (from data/searchqa_sub2api_smoke)
+  [model config] backend=openai_compatible  optimizer=gpt-6.1-sol (openai_compatible)  target=gpt-6.1-sol (openai_compatible)  reasoning=medium
+  [initial skill] <REPO>/skillopt/envs/searchqa/skills/initial.md (104 chars)
+
+  [config] epochs=1 steps/epoch=2 (auto) accum=1 batch_size=4
+  [config] train_size=8
+  [config] batches/epoch=2 total_steps=2 games/epoch=8
+  [config] lr_scheduler=cosine edit_budget=2 min_edit_budget=1
+  [config] skill_update_mode=patch lr_control_mode=fixed rewrite_reasoning_effort=off rewrite_max_completion_tokens=64000
+  [config] longitudinal_pair_policy=mixed
+  [config] base_seeds=[43, 44]
+  [gate] metric=hard
+  [slow update] acceptance=gated (selection-set validation)
+
+============================================================
+  BASELINE — evaluate initial skill on Selection set (valid_seen)
+============================================================
+  Selection items: 4
+    [rollout] 1/4 (acc=0.000) id=8da4cdbf5ede473e80797b67e8869735 hard=0
+    [rollout] 2/4 (acc=0.500) id=7b1bc47134d249feac8d44365ce0e562 hard=1
+    [rollout] 3/4 (acc=0.667) id=5b3b5778cbbf480d8faa1558da5075ad hard=1
+    [rollout] 4/4 (acc=0.500) id=6651ec8baf2a42e0b2f704c9b38a2044 hard=0
+  [baseline result] selection hard=0.5000 soft=0.8333 gate[hard]=0.5000
+
+  [EPOCH 1/1] shuffled_seeds=[1043, 1044]
+
+  [STEP 1/2] epoch=1 step_in_epoch=0 ==============================
+    [1/6 ROLLOUT] train items=4 (from pool, batch_seed=1043)
+    [rollout] 1/4 (acc=1.000) id=5661bc9530af44e1bc5a11bc8eff61b1 hard=1
+    [rollout] 2/4 (acc=0.500) id=50260efa500944f8b48b4397f7630cfa hard=0
+    [rollout] 3/4 (acc=0.667) id=6e065119e0004def99b1534c5580be6e hard=1
+    [rollout] 4/4 (acc=0.750) id=03d6a86c1af249de8c12174d3dba4b54 hard=1
+    [1/6 done] hard=0.7500 soft=0.9500
+    [2/6 REFLECT minibatch] failure=1→1 groups  success=3→1 groups  (M=4, L=2, workers=2)
+      [analyst] 1/2 minibatch_fail_000 (1 trajs) → 1 edits
+      [analyst] 2/2 minibatch_succ_000 (3 trajs) → 1 edits
+    [2/6 done] failure_patches=1 success_patches=1
+    [3/6 AGGREGATE] failure=1 success=1 (parallel, workers=2)
+    [aggregate final] 1+1 → 2 edits
+    [3/6 done] merged 2 edits
+    [4/6 SELECT] 2 -> 2 edits (budget=2, lr_control=fixed)
+    [5/6 UPDATE] skill_len 104 -> 1168
+    [6/6 EVALUATE] selection items=4
+    [rollout] 1/4 (acc=1.000) id=8da4cdbf5ede473e80797b67e8869735 hard=1
+    [rollout] 2/4 (acc=1.000) id=7b1bc47134d249feac8d44365ce0e562 hard=1
+    [rollout] 3/4 (acc=1.000) id=6651ec8baf2a42e0b2f704c9b38a2044 hard=1
+    [rollout] 4/4 (acc=1.000) id=5b3b5778cbbf480d8faa1558da5075ad hard=1
+    [6/6 EVALUATE] ACCEPT (new best) hard=1.0000 > prev best 0.5000
+
+  [STEP 1 done] epoch=1 action=accept_new_best current=1.0000 best=1.0000 dt=156.1s
+    timing: rollout=4.3s reflect=9.7s aggregate=134.9s select=0.0s evaluate=7.1s
+
+  [STEP 2/2] epoch=1 step_in_epoch=1 ==============================
+    [1/6 ROLLOUT] train items=4 (from pool, batch_seed=1044)
+    [rollout] 1/4 (acc=1.000) id=e3452cd297f04982b80fc48c45d6973b hard=1
+    [rollout] 2/4 (acc=1.000) id=e7528ab96f1a4351bdff5a095bff1b35 hard=1
+    [rollout] 3/4 (acc=1.000) id=891ee395238c47eb8ba9a645058638ce hard=1
+    [rollout] 4/4 (acc=1.000) id=91a2ec25857d4214b9aaacc3f76ad8af hard=1
+    [1/6 done] hard=1.0000 soft=1.0000
+    [2/6 REFLECT minibatch] failure=0→0 groups  success=4→1 groups  (M=4, L=2, workers=2)
+      [analyst] 1/1 minibatch_succ_000 (4 trajs) → 1 edits
+    [2/6 done] failure_patches=0 success_patches=1
+    [3/6 AGGREGATE] failure=0 success=1 (parallel, workers=2)
+    [3/6 done] merged 1 edits
+    [4/6 SELECT] 1 -> 1 edits (budget=1, lr_control=fixed)
+    [5/6 UPDATE] skill_len 1168 -> 1436
+    [6/6 EVALUATE] selection items=4
+    [rollout] 1/4 (acc=1.000) id=8da4cdbf5ede473e80797b67e8869735 hard=1
+    [rollout] 2/4 (acc=1.000) id=7b1bc47134d249feac8d44365ce0e562 hard=1
+    [rollout] 3/4 (acc=1.000) id=5b3b5778cbbf480d8faa1558da5075ad hard=1
+    [rollout] 4/4 (acc=1.000) id=6651ec8baf2a42e0b2f704c9b38a2044 hard=1
+    [6/6 EVALUATE] REJECT hard=1.0000 <= current=1.0000
+
+  [STEP 2 done] epoch=1 action=reject current=1.0000 best=1.0000 dt=18.2s
+    timing: rollout=4.9s reflect=9.0s aggregate=0.0s select=0.0s evaluate=4.4s
+
+  [SLOW UPDATE epoch 1] injected empty placeholder
+
+  [META SKILL epoch 1] skipped — first epoch
+
+  [done] best skill from step 1, score=1.0000
+    [rollout] 1/4 (acc=1.000) id=7b1bc47134d249feac8d44365ce0e562 hard=1
+    [rollout] 2/4 (acc=1.000) id=8da4cdbf5ede473e80797b67e8869735 hard=1
+    [rollout] 3/4 (acc=1.000) id=5b3b5778cbbf480d8faa1558da5075ad hard=1
+    [rollout] 4/4 (acc=1.000) id=6651ec8baf2a42e0b2f704c9b38a2044 hard=1
+
+  [final skill val] items=4 final_selection_hard=1.0000 gate=1.0000 (best=1.0000)
+
+============================================================
+  BASELINE TEST — evaluate initial skill on Test set (valid_unseen)
+============================================================
+  Test items: 8
+    [rollout] 1/8 (acc=1.000) id=7f10d17a459c48d9982e6d322d5dadf3 hard=1
+    [rollout] 2/8 (acc=1.000) id=d9bf831ca84a4d778e20e5dfa93c4bdd hard=1
+    [rollout] 3/8 (acc=1.000) id=b6f8fd5503b34aeabcd262c5db0647f6 hard=1
+    [rollout] 4/8 (acc=1.000) id=e0acb276ede24379b3d89f22718417a2 hard=1
+    [rollout] 5/8 (acc=1.000) id=f6ed17015c094c6681cb9e47bd71a753 hard=1
+    [rollout] 6/8 (acc=1.000) id=5e49ad19261a45208d709a7643bd4574 hard=1
+    [rollout] 7/8 (acc=1.000) id=d32905148f0246ee86203edb4e025a6b hard=1
+    [rollout] 8/8 (acc=1.000) id=46cfd150209a4b319ccceb2e96b2c11d hard=1
+
+  === Baseline Test Results (S_0) ===
+    qa                                      : hard=0/0=0.0000
+    overall                                 : hard=8.0/8=1.0000
+
+============================================================
+  BEST SKILL TEST — evaluate best skill on Test set (valid_unseen)
+============================================================
+  Test items: 8
+    [rollout] 1/8 (acc=1.000) id=7f10d17a459c48d9982e6d322d5dadf3 hard=1
+    [rollout] 2/8 (acc=1.000) id=d9bf831ca84a4d778e20e5dfa93c4bdd hard=1
+    [rollout] 3/8 (acc=1.000) id=b6f8fd5503b34aeabcd262c5db0647f6 hard=1
+    [rollout] 4/8 (acc=1.000) id=e0acb276ede24379b3d89f22718417a2 hard=1
+    [rollout] 5/8 (acc=1.000) id=5e49ad19261a45208d709a7643bd4574 hard=1
+    [rollout] 6/8 (acc=1.000) id=f6ed17015c094c6681cb9e47bd71a753 hard=1
+    [rollout] 7/8 (acc=1.000) id=d32905148f0246ee86203edb4e025a6b hard=1
+    [rollout] 8/8 (acc=1.000) id=46cfd150209a4b319ccceb2e96b2c11d hard=1
+
+  === Best Skill Test Results ===
+    qa                                      : hard=0/0=0.0000
+    overall                                 : hard=8.0/8=1.0000
+
+============================================================
+  FINAL SKILL TEST — evaluate last skill on Test set (valid_unseen)
+============================================================
+  Test items: 8
+    [rollout] 1/8 (acc=1.000) id=d9bf831ca84a4d778e20e5dfa93c4bdd hard=1
+    [rollout] 2/8 (acc=1.000) id=7f10d17a459c48d9982e6d322d5dadf3 hard=1
+    [rollout] 3/8 (acc=1.000) id=e0acb276ede24379b3d89f22718417a2 hard=1
+    [rollout] 4/8 (acc=1.000) id=5e49ad19261a45208d709a7643bd4574 hard=1
+    [rollout] 5/8 (acc=1.000) id=f6ed17015c094c6681cb9e47bd71a753 hard=1
+    [rollout] 6/8 (acc=1.000) id=b6f8fd5503b34aeabcd262c5db0647f6 hard=1
+    [rollout] 7/8 (acc=1.000) id=d32905148f0246ee86203edb4e025a6b hard=1
+    [rollout] 8/8 (acc=1.000) id=46cfd150209a4b319ccceb2e96b2c11d hard=1
+
+  === Final Skill Test Results ===
+    qa                                      : hard=0/0=0.0000
+    overall                                 : hard=8.0/8=1.0000
+
+  === Improvement vs baseline (init S_0) ===
+    [2] best-on-val hard: 1.0000 -> 1.0000  (delta=+0.0000)
+    [3] final/last  hard: 1.0000 -> 1.0000  (delta=+0.0000)
+
+============================================================
+  Final Summary
+============================================================
+  steps=2 accept=1 reject=1 skip=0
+  best_score=1.0000 (step 1)  wall=215s
+    epoch 1: accept=1 reject=1 best=1.0000
+
+  === TEST scores (3 skills, split=valid_unseen) ===
+    [1] init/baseline (S_0)          : test_hard=1.0000
+    [2] best-on-val (step 1)         : test_hard=1.0000 test_soft=1.0000
+    [3] final/last skill             : test_hard=1.0000 test_soft=1.0000
+  total tokens: 71,576 (prompt=69,637 completion=1,939 calls=52)
+
+  Output saved to: <REPO>/outputs/sub2api_smoke_20261104
+  Final test: 1.0000

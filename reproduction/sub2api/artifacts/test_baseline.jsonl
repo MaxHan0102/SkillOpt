@@ -1,0 +1,8 @@
+{"id": "46cfd150209a4b319ccceb2e96b2c11d", "hard": 1, "soft": 1.0, "predicted_answer": "California", "gold_answers": ["California"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "5e49ad19261a45208d709a7643bd4574", "hard": 1, "soft": 1.0, "predicted_answer": "Libraries", "gold_answers": ["libraries"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "7f10d17a459c48d9982e6d322d5dadf3", "hard": 1, "soft": 1.0, "predicted_answer": "London", "gold_answers": ["London"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "b6f8fd5503b34aeabcd262c5db0647f6", "hard": 1, "soft": 1.0, "predicted_answer": "Mel Blanc", "gold_answers": ["Mel Blanc"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "d32905148f0246ee86203edb4e025a6b", "hard": 1, "soft": 1.0, "predicted_answer": "Prostate cancer", "gold_answers": ["prostate cancer"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "d9bf831ca84a4d778e20e5dfa93c4bdd", "hard": 1, "soft": 1.0, "predicted_answer": "Toyota", "gold_answers": ["Toyota"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "e0acb276ede24379b3d89f22718417a2", "hard": 1, "soft": 1.0, "predicted_answer": "Huguenots", "gold_answers": ["the Huguenots"], "agent_ok": true, "fail_reason": "", "n_turns": 1}
+{"id": "f6ed17015c094c6681cb9e47bd71a753", "hard": 1, "soft": 1.0, "predicted_answer": "Alaska", "gold_answers": ["Alaska"], "agent_ok": true, "fail_reason": "", "n_turns": 1}

@@ -1,0 +1,76 @@
+{
+  "run_id": "sub2api_smoke_20261104",
+  "classification": "RECORDED",
+  "origin": "new_run",
+  "upstream_source_revision": "bc0a392ef0a7f92840ec673d80204d34ced169d0",
+  "skillopt_package_version": "0.2.0",
+  "python_version": "3.10.12",
+  "model": "gpt-6.1-sol",
+  "backend": "openai_compatible",
+  "data_protocol": "workflow_smoke_only_not_paper_split",
+  "config_sha256": "a0068a275fa136a6830640151cbe41b7c1d5904272df405fe4e5dd96bd80c0da",
+  "data_manifest_sha256": "41ba2f1e9fc49ebacb2117a8d4b51b0777b5e1a145c336848b75741df5eec9c5",
+  "scores": {
+    "validation_baseline": {
+      "hard": 0.5,
+      "soft": 0.8333333333333333
+    },
+    "validation_step1": {
+      "hard": 1.0,
+      "soft": 1.0
+    },
+    "validation_step2": {
+      "hard": 1.0,
+      "soft": 1.0
+    },
+    "test_baseline": {
+      "hard": 1.0,
+      "soft": 1.0
+    },
+    "test_best": {
+      "hard": 1.0,
+      "soft": 1.0
+    },
+    "test_final": {
+      "hard": 1.0,
+      "soft": 1.0
+    }
+  },
+  "total_steps": 2,
+  "total_accepts": 1,
+  "total_rejects": 1,
+  "best_step": 1,
+  "total_wall_time_s": 215.1,
+  "token_summary": {
+    "_total": {
+      "calls": 52,
+      "prompt_tokens": 69637,
+      "completion_tokens": 1939,
+      "total_tokens": 71576
+    },
+    "analyst": {
+      "calls": 3,
+      "prompt_tokens": 10695,
+      "completion_tokens": 751,
+      "total_tokens": 11446
+    },
+    "merge": {
+      "calls": 1,
+      "prompt_tokens": 778,
+      "completion_tokens": 456,
+      "total_tokens": 1234
+    },
+    "rollout": {
+      "calls": 48,
+      "prompt_tokens": 58164,
+      "completion_tokens": 732,
+      "total_tokens": 58896
+    }
+  },
+  "limitations": [
+    "20 real examples, different splits and model from the paper",
+    "First epoch skips substantive slow/meta update",
+    "Seed fixes data sampling, not remote model determinism",
+    "Token counts are the successful calls recorded by SkillOpt, not a gateway billing statement"
+  ]
+}

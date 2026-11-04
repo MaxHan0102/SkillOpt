@@ -1,0 +1,43 @@
+{
+  "purpose": "workflow_smoke_only_not_paper_split",
+  "source_url": "https://datasets-server.huggingface.co/rows?dataset=lucadiliello%2Fsearchqa&config=default&split=validation&offset=0&length=20",
+  "selection": "validation rows [0:8] train, [8:12] val, [12:20] test",
+  "counts": {
+    "train": 8,
+    "val": 4,
+    "test": 8
+  },
+  "ids": {
+    "train": [
+      "e7528ab96f1a4351bdff5a095bff1b35",
+      "891ee395238c47eb8ba9a645058638ce",
+      "e3452cd297f04982b80fc48c45d6973b",
+      "91a2ec25857d4214b9aaacc3f76ad8af",
+      "5661bc9530af44e1bc5a11bc8eff61b1",
+      "6e065119e0004def99b1534c5580be6e",
+      "03d6a86c1af249de8c12174d3dba4b54",
+      "50260efa500944f8b48b4397f7630cfa"
+    ],
+    "val": [
+      "7b1bc47134d249feac8d44365ce0e562",
+      "8da4cdbf5ede473e80797b67e8869735",
+      "5b3b5778cbbf480d8faa1558da5075ad",
+      "6651ec8baf2a42e0b2f704c9b38a2044"
+    ],
+    "test": [
+      "7f10d17a459c48d9982e6d322d5dadf3",
+      "d9bf831ca84a4d778e20e5dfa93c4bdd",
+      "b6f8fd5503b34aeabcd262c5db0647f6",
+      "e0acb276ede24379b3d89f22718417a2",
+      "5e49ad19261a45208d709a7643bd4574",
+      "f6ed17015c094c6681cb9e47bd71a753",
+      "46cfd150209a4b319ccceb2e96b2c11d",
+      "d32905148f0246ee86203edb4e025a6b"
+    ]
+  },
+  "sha256": {
+    "train": "e17f71e73b42ea8b3b95272509f184cc7e7285663ee8eb651d2e1066304d2017",
+    "val": "252eb57e83998fa8a12ee017457711dea4bdd3484eafa388f02bea8bd3a91602",
+    "test": "67d5f7033e0d4797d993faeb9f0b03446e5e4ef7e0cf49292de93172001584fd"
+  }
+}
