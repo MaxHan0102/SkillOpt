@@ -113,14 +113,18 @@ def collect(run_dir: Path, benchmark: str) -> dict:
             path = run_dir / "test_eval/results.jsonl"
             reused_from = "best"
         rows = [json.loads(line) for line in path.read_text().splitlines() if line]
-        expected = json.loads((ROOT / "data" / f"{benchmark}_id_split/test/items.json").read_text())
+        split_name = f"{benchmark}_{'path' if benchmark == 'alfworld' else 'id'}_split"
+        expected = json.loads((ROOT / "data" / split_name / "test/items.json").read_text())
         if len(rows) != len(expected) or {str(row["id"]) for row in rows} != {str(row["id"]) for row in expected}:
             raise ValueError(f"Incomplete test coverage: {name}")
         results[name] = {
             "n": len(rows), "hard": sum(row["hard"] for row in rows) / len(rows),
             "soft": sum(row["soft"] for row in rows) / len(rows),
-            "api_failures": sum(row.get("agent_ok") is False for row in rows),
+            "api_failures": sum(any(row.get(key) is False for key in ("agent_ok", "llm_ok")) for row in rows),
+            "tool_failures": sum(any(row.get(key) is False for key in ("code_ok", "exec_ok")) for row in rows),
         }
+        if benchmark == "alfworld":
+            results[name]["api_failures"] += alfworld_fallbacks(path.parent)
         if reused_from:
             results[name]["reused_from"] = reused_from
     for name, key in (("baseline", "baseline_test_hard"), ("best", "test_hard"), ("final", "final_test_hard")):
@@ -134,13 +138,24 @@ def collect(run_dir: Path, benchmark: str) -> dict:
         **{key: summary[key] for key in ("baseline_selection_hard", "best_selection_hard", "total_steps", "total_accepts", "total_rejects", "token_summary", "total_wall_time_s")},
     }
     write_json(run_dir / "recorded_results.json", report)
-    lines = [f"# {benchmark}: GPT-6.1 Terra / High", "", "| Skill | Test count | EM/accuracy | F1/soft | API failures |", "|---|---:|---:|---:|---:|"]
+    lines = [f"# {benchmark}: GPT-6.1 Terra / High", "", "| Skill | Test count | EM/accuracy | F1/soft | API failures | Tool failures |", "|---|---:|---:|---:|---:|---:|"]
     for name, score in results.items():
-        lines.append(f"| {name} | {score['n']} | {score['hard']:.6f} | {score['soft']:.6f} | {score['api_failures']} |")
+        lines.append(f"| {name} | {score['n']} | {score['hard']:.6f} | {score['soft']:.6f} | {score['api_failures']} | {score['tool_failures']} |")
     lines += ["", f"Steps: {summary['total_steps']}; accepted: {summary['total_accepts']}; rejected: {summary['total_rejects']}.",
               "", "Official ID splits and optimizer flow; custom model and operational concurrency/timeouts. This is a new experiment, not the paper's original model result."]
     (run_dir / "REPORT.md").write_text("\n".join(lines) + "\n")
     return report
+
+
+def alfworld_fallbacks(directory: Path) -> int:
+    """The official text simulator reports agent_ok even on API fallback."""
+    count = 0
+    for path in directory.rglob("conversation.json"):
+        conversation = json.loads(path.read_text())
+        if isinstance(conversation, list):
+            count += sum(isinstance(row, dict) and row.get("model_response") ==
+                         "<think>error</think><action>look</action>" for row in conversation)
+    return count
 
 
 def worker(benchmark: str, run_root: Path) -> None:

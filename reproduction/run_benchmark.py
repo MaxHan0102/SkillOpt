@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from reproduction.prepare_additional_data import prepare  # noqa: E402
 from reproduction.prepare_official_data import digest  # noqa: E402
-from reproduction.run_experiments import credentials, install_request_audit, now, write_json  # noqa: E402
+from reproduction.run_experiments import collect, credentials, install_request_audit, now, write_json  # noqa: E402
 from reproduction.tool_reasoning_compat import install_tool_reasoning  # noqa: E402
 from reproduction.trajectory_compat import install_mapped_trajectory_reader  # noqa: E402
 
@@ -142,9 +142,20 @@ def main() -> None:
             **state, "config": str(config.relative_to(ROOT)), "config_sha256": digest(config),
             "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
             "scope": "one real example per official split, one training step" if args.command == "smoke" else "official full splits",
-            "overrides": overrides, "counts": provenance.get("counts"), "mapped_trajectory_reader": True,
+            "overrides": overrides, "counts": provenance.get("counts"), "data": provenance,
+            "mapped_trajectory_reader": True,
             "terra_tool_reasoning": "high",
+            "python": sys.version,
+            "initial_skill_sha256": digest(Path(cfg["skill_init"])),
+            "resolved_settings": {key: cfg.get(key) for key in (
+                "num_epochs", "batch_size", "train_size", "seed", "minibatch_size", "merge_batch_size",
+                "use_gate", "use_slow_update", "use_meta_skill", "slow_update_gate_with_selection",
+                "sel_env_num", "test_env_num", "workers", "analyst_workers", "max_steps", "max_turns",
+                "max_tool_turns", "max_completion_tokens", "search_mode", "mode",
+            )},
         })
+        with (directory / "requirements.txt").open("w") as requirements:
+            subprocess.run([sys.executable, "-m", "pip", "freeze"], stdout=requirements, check=True)
         state.update(phase="running", updated_at=now())
         write_json(directory / "status.json", state)
         if args.command == "eval":
@@ -166,7 +177,13 @@ def main() -> None:
                 raise RuntimeError("No actual analyst calls recorded; reflection check did not pass.")
         if args.command == "smoke":
             collect_smoke(directory, benchmark)
-        state.update(phase="completed", finished_at=now())
+        failures = 0
+        if args.command == "train":
+            state.update(phase="collecting_results", updated_at=now())
+            write_json(directory / "status.json", state)
+            report = collect(directory, benchmark)
+            failures = sum(row["api_failures"] + row["tool_failures"] for row in report["test"].values())
+        state.update(phase="completed_with_errors" if failures else "completed", finished_at=now())
     except BaseException as error:
         state.update(phase="failed", error_type=type(error).__name__, finished_at=now())
         raise

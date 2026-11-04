@@ -69,7 +69,10 @@ def test_both_model_roles_send_high_and_audit_excludes_secrets(tmp_path, monkeyp
     assert len(captured) == 2
 
 
-@pytest.mark.parametrize("benchmark,count", [("searchqa", 400), ("livemathematicianbench", 35)])
+@pytest.mark.parametrize("benchmark,count", [
+    ("searchqa", 400), ("livemathematicianbench", 35), ("docvqa", 107),
+    ("officeqa", 50), ("spreadsheetbench", 80), ("alfworld", 39),
+])
 def test_official_split_and_optimizer_settings(benchmark, count):
     cfg = flatten_config(load_config(str(runner.REPRO / "configs" / f"{benchmark}_terra_high.yaml")))
     assert cfg["optimizer_model"] == cfg["target_model"] == runner.MODEL
@@ -78,15 +81,18 @@ def test_official_split_and_optimizer_settings(benchmark, count):
     assert cfg["reasoning_effort"] == "high"
     assert cfg["num_epochs"] == 4
     assert cfg["use_gate"] and cfg["use_slow_update"] and cfg["use_meta_skill"] and cfg["eval_test"]
-    assert cfg["sel_env_num"] == cfg["test_env_num"] == cfg["limit"] == 0
-    manifest = runner.ROOT / "data" / f"{benchmark}_id_split/train/items.json"
+    assert cfg["sel_env_num"] == cfg["test_env_num"] == cfg.get("limit", 0) == 0
+    split_name = f"{benchmark}_{'path' if benchmark == 'alfworld' else 'id'}_split"
+    manifest = runner.ROOT / "data" / split_name / "train/items.json"
     assert len(json.loads(manifest.read_text())) == count
 
 
 @pytest.mark.parametrize("same_skill", [True, False])
-def test_final_test_reuse_requires_identical_skill_bytes(tmp_path, monkeypatch, same_skill):
+@pytest.mark.parametrize("benchmark", ["searchqa", "docvqa", "officeqa", "spreadsheetbench", "alfworld"])
+def test_final_test_reuse_requires_identical_skill_bytes(tmp_path, monkeypatch, same_skill, benchmark):
     monkeypatch.setattr(runner, "ROOT", tmp_path)
-    manifest = tmp_path / "data/searchqa_id_split/test/items.json"
+    split_name = f"{benchmark}_{'path' if benchmark == 'alfworld' else 'id'}_split"
+    manifest = tmp_path / "data" / split_name / "test/items.json"
     manifest.parent.mkdir(parents=True)
     manifest.write_text(json.dumps([{"id": "one"}, {"id": "two"}]))
     run = tmp_path / "run"
@@ -104,15 +110,25 @@ def test_final_test_reuse_requires_identical_skill_bytes(tmp_path, monkeypatch, 
     for folder in ("test_eval_baseline", "test_eval"):
         (run / folder).mkdir()
         (run / folder / "results.jsonl").write_text("".join(
-            json.dumps({"id": key, "hard": 1.0, "soft": 1.0, "agent_ok": True}) + "\n"
+            json.dumps({"id": key, "hard": 1.0, "soft": 1.0, "agent_ok": True,
+                        "llm_ok": not (benchmark == "spreadsheetbench" and key == "one"),
+                        "exec_ok": not (benchmark == "spreadsheetbench" and key == "two")}) + "\n"
             for key in ("one", "two")
         ))
+        if benchmark == "alfworld":
+            (run / folder / "conversation.json").write_text(json.dumps([
+                {"model_response": "<think>error</think><action>look</action>"},
+            ]))
     if same_skill:
-        report = runner.collect(run, "searchqa")
+        report = runner.collect(run, benchmark)
         assert report["test"]["final"]["reused_from"] == "best"
+        if benchmark in ("alfworld", "spreadsheetbench"):
+            assert report["test"]["baseline"]["api_failures"] == 1
+        if benchmark == "spreadsheetbench":
+            assert report["test"]["baseline"]["tool_failures"] == 1
     else:
         with pytest.raises(ValueError, match="distinct final skill"):
-            runner.collect(run, "searchqa")
+            runner.collect(run, benchmark)
 
 
 def test_mapped_math_trajectory_reaches_the_analyst_with_original_id(tmp_path, monkeypatch):
