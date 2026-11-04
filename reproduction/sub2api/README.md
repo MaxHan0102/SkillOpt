@@ -11,6 +11,29 @@ select → update → evaluate。
 它使用小样本和自选模型，**不代表复现论文中的性能指标**。
 原有优化器、提示词、评分实现不作修改。
 
+## 目录结构
+
+我们新增的脚本、配置、文档、结果，以及本机的网关配置、数据和完整输出，
+统一放在 `reproduction/sub2api/` 下：
+
+```text
+reproduction/sub2api/
+├── run.sh                    # 启动脚本
+├── prepare_data.py           # 小样本数据准备
+├── configs/searchqa_smoke.yaml
+├── .env.example              # 网关配置模板
+├── .env                      # 本机配置，Git 忽略
+├── data/                     # 本机数据，Git 忽略
+├── outputs/                  # 完整运行输出，Git 忽略
+├── data_manifest.json        # 数据 ID 与哈希
+├── artifacts/                # 可分享的结果与技能
+├── README.md
+└── RESULTS.md
+```
+
+配置通过 `_base_` 引用官方配置。仓库根目录 `.venv/` 是安装 SkillOpt 的
+共享 Python 环境，不提交到 Git。
+
 ## 环境与运行
 
 在仓库根目录执行（需要 Python 3.10+ 和 uv，无需 GPU）：
@@ -18,13 +41,13 @@ select → update → evaluate。
 ```bash
 uv venv .venv --python python3
 uv pip install --python .venv/bin/python -e '.[dev]'
-cp reproduction/sub2api/.env.example .env
-# 在 .env 中填写 SUB2API_BASE_URL 和可用的 SUB2API_MODEL。
+cp reproduction/sub2api/.env.example reproduction/sub2api/.env
+# 在 reproduction/sub2api/.env 中填写 SUB2API_BASE_URL 和可用的 SUB2API_MODEL。
 # 在终端设置 SUB2API_API_KEY；也兼容现有 MAXAPI_API_KEY。
 bash reproduction/sub2api/run.sh
 ```
 
-当前机器已配置根目录 `.env`，密钥从已有 `MAXAPI_API_KEY` 读取。
+当前机器已配置 `reproduction/sub2api/.env`，密钥从已有 `MAXAPI_API_KEY` 读取。
 `.env`、虚拟环境、原始数据和完整运行输出均由 Git 忽略。
 公开文件不包含个人网关地址或密钥。
 
@@ -42,17 +65,19 @@ bash reproduction/sub2api/run.sh
 `data_manifest.json` 记录数据来源、每个 split 的 ID 和 SHA-256；
 后续准备数据时会校验源数据是否变化。
 
-配置见 `configs/searchqa/sub2api_smoke.yaml`：1 epoch，batch size 4，
+准备的数据写入 `reproduction/sub2api/data/searchqa_smoke/`。
+配置见 `reproduction/sub2api/configs/searchqa_smoke.yaml`：1 epoch，batch size 4，
 2 次训练更新，edit budget 从 2 调度到 1，2 个并发 worker。
 保留严格提升才接受的验证门控，并给慢更新启用验证门控。
 慢更新和 meta skill 开关保持开启；按官方实现，第一个 epoch 的慢更新仅插入
 空占位，meta skill 跳过，因此本次 1 epoch 运行未实际验证跨 epoch 更新。
 训练结束由官方训练器分别用初始技能和最优技能评测同一测试集。
 
-默认写入一个全新的 `outputs/sub2api_smoke_时间戳/`。也可指定目录：
+默认写入一个全新的 `reproduction/sub2api/outputs/sub2api_smoke_时间戳/`。
+也可指定目录（相对路径以仓库根目录为基准）：
 
 ```bash
-bash reproduction/sub2api/run.sh outputs/my_sub2api_run
+bash reproduction/sub2api/run.sh reproduction/sub2api/outputs/my_run
 ```
 
 目录已存在时脚本会退出，避免旧缓存混入新实验。

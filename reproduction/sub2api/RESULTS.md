@@ -30,7 +30,8 @@
 训练/验证/测试为真实 SearchQA 的 8/4/8 独立小样本，模型与划分均不同于论文，
 结果仅用于确认工作流，不作论文性能复现结论。远程模型输出不因数据 seed 固定而保证确定。
 
-本地完整输出：`outputs/sub2api_smoke_20261104/`。
+本地完整输出已整理到 `reproduction/sub2api/outputs/sub2api_smoke_20261104/`。
+原始日志和运行状态保留实验发生时的旧路径，没有改写历史运行记录。
 可分享产物位于 `artifacts/`：
 
 - `best_skill.md`：验证集选出的部署技能。
@@ -38,6 +39,8 @@
 - `history.json`：官方逐步记录，包括编辑、门控和耗时。
 - `validation_*.jsonl`、`test_*.jsonl`：逐条 ID、预测、参考答案和分数。
 - `run_summary.json`：汇总结果、配置摘要哈希和来源信息。
+- `original_config.yaml`：当次运行配置的原始字节，匹配汇总中的配置哈希；
+  当前可运行配置见 `configs/searchqa_smoke.yaml`，仅调整了继承和数据路径。
 - `console.log`：替换本机绝对路径后的完整训练日志。
 
 已核对各评测批次的 ID 覆盖、样本数和 API 成功标志，并由逐条记录重新计算均值，

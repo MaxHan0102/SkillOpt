@@ -7,8 +7,8 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
-ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / "data/searchqa_sub2api_smoke"
+ROOT = Path(__file__).resolve().parent
+OUTPUT = ROOT / "data/searchqa_smoke"
 PARAMS = {
     "dataset": "lucadiliello/searchqa", "config": "default",
     "split": "validation", "offset": 0, "length": 20,
