@@ -60,6 +60,7 @@ SearchQA 结果和技能见
 环境、网关与恢复说明见 [`FULL_EXPERIMENTS.md`](FULL_EXPERIMENTS.md)。
 
 2026-11-05：另外四项任务的环境和配置已准备；DocVQA、SpreadsheetBench、
-ALFWorld 的完整官方划分数据与真实 API 小规模训练流程检查已完成。
-这三项完整实验尚未启动；OfficeQA 因数据授权未取得，按用户要求暂缓。
+ALFWorld、OfficeQA 的完整官方划分数据与真实 API 小规模训练流程检查已完成。
+OfficeQA 在用户取得授权后使用官方端点下载，保留默认 HF 镜像设置。
+这四项完整实验尚未启动。
 详见 [`READINESS.md`](READINESS.md)。

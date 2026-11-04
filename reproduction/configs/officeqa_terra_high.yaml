@@ -1,4 +1,4 @@
-# Data is gated: supply authorized question splits and document corpus first.
+# Data is gated: the preparation script uses an authorized cached HF login.
 _base_: ../../configs/officeqa/default.yaml
 model:
   backend: azure_openai
@@ -13,7 +13,7 @@ gradient:
 env:
   split_dir: reproduction/data/officeqa_official
   data_dirs:
-    - reproduction/data/officeqa_docs_official
+    - reproduction/data/officeqa_docs_official/treasury_bulletins_parsed
   search_mode: offline
   search_api_url: ""
   workers: 2

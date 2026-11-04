@@ -85,9 +85,32 @@
     "workbook_count": 0
   },
   "officeqa": {
+    "benchmark": "officeqa",
+    "source_repo": "databricks/officeqa",
+    "source_revision": "8ecbf18d3833daf4750a903d14963e4c4c1d4cd8",
+    "download_endpoint": "https://huggingface.co",
+    "authenticated": true,
+    "official_manifest_sha256": "8f76983eadeb6670df2fc88f568fa86c6318d4e8f02912bf05c5c69955a867e7",
+    "counts": {
+      "train": 50,
+      "val": 24,
+      "test": 172
+    },
+    "split_sha256": {
+      "train": "e33aef64b575bf49249df48b2ac4dc8e42a19781cd12b29901daa9bb6d3a1446",
+      "val": "a07e0ea35f8dc7c0bfbf6195e18bb3f7a10cf577e32747fc60477cb3b7f33bb0",
+      "test": "f057303738b993e77d0102f487645686bd6788fbf4bb87d180a15d801cbfffe4"
+    },
+    "parsed_json_files": 697,
+    "text_files": 697,
+    "referenced_text_documents": 285,
+    "integrity": "Each downloaded file matches the pinned Hugging Face LFS SHA-256 or Git blob SHA-1.",
+    "evidence_mode": "Official offline adapter: parsed source pages plus local document tools.",
+    "local_provenance_sha256": "f7f30fb9f7596da3ed625fbb2a0c7aa31d64a3be2d6c94771a2b04861cf09aab",
+    "downloaded_files": 1395,
+    "source_csv_sha256": "b0b270d15acdd04dcdc6ca389f089010ffe2b8453dbb400343229ea73b66c6d7",
     "config_ready": true,
-    "data_ready": false,
-    "real_api_smoke": "not_run",
-    "reason": "Official dataset gated; HTTP 401. User requested proceeding with the other three benchmarks."
+    "data_ready": true,
+    "real_api_smoke": "completed"
   }
 }

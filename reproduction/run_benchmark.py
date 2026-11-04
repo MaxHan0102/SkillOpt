@@ -1,7 +1,7 @@
 """Run official training/evaluation or a tiny real-API pipeline check.
 
 Invoke using benchmark_python.sh so each benchmark uses its assigned environment.
-OfficeQA requires authorized data and is excluded from automatic data downloads.
+OfficeQA downloads require a cached Hugging Face login with authorized access.
 """
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 from reproduction.prepare_additional_data import prepare  # noqa: E402
 from reproduction.prepare_official_data import digest  # noqa: E402
 from reproduction.run_experiments import credentials, install_request_audit, now, write_json  # noqa: E402
+from reproduction.tool_reasoning_compat import install_tool_reasoning  # noqa: E402
 from reproduction.trajectory_compat import install_mapped_trajectory_reader  # noqa: E402
 
 BENCHMARKS = ("docvqa", "officeqa", "spreadsheetbench", "alfworld")
@@ -50,7 +51,8 @@ def collect_smoke(directory: Path, benchmark: str) -> dict:
         rows = [json.loads(line) for line in path.read_text().splitlines() if line]
         errors += sum(any(row.get(key) is False for key in ("agent_ok", "llm_ok", "code_ok", "exec_ok")) for row in rows)
         results[str(path.parent.relative_to(directory))] = [
-            {key: row[key] for key in ("id", "hard", "soft", "agent_ok", "llm_ok", "code_ok", "exec_ok", "n_turns") if key in row}
+            {key: row[key] for key in ("id", "hard", "soft", "agent_ok", "llm_ok", "code_ok", "exec_ok", "n_turns",
+                                      "oracle_parsed_pages_included", "oracle_parsed_pages_chars", "use_local_tools") if key in row}
             for row in rows
         ]
     # The official ALFWorld rollout reports agent_ok=True even on API fallback.
@@ -93,12 +95,7 @@ def main() -> None:
     from skillopt.config import flatten_config, load_config
 
     cfg = flatten_config(load_config(str(config)))
-    if benchmark == "officeqa":
-        if not Path(cfg["split_dir"]).is_dir() or not Path(cfg["data_dirs"][0]).is_dir():
-            parser.error("OfficeQA data is gated; authorized question splits and document corpus are required.")
-        provenance = {"benchmark": benchmark, "authorized_local_data": True}
-    else:
-        provenance = prepare(benchmark)
+    provenance = prepare(benchmark)
     if args.command == "check":
         from scripts.train import get_adapter
 
@@ -125,6 +122,7 @@ def main() -> None:
         from skillopt.model import azure_openai
 
         azure_openai.configure_azure_openai(endpoint=base, api_key=key, auth_mode="openai_compatible")
+        install_tool_reasoning()
         install_request_audit(directory / "request_metadata.jsonl")
         install_mapped_trajectory_reader()
         overrides = []
@@ -145,6 +143,7 @@ def main() -> None:
             "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
             "scope": "one real example per official split, one training step" if args.command == "smoke" else "official full splits",
             "overrides": overrides, "counts": provenance.get("counts"), "mapped_trajectory_reader": True,
+            "terra_tool_reasoning": "high",
         })
         state.update(phase="running", updated_at=now())
         write_json(directory / "status.json", state)

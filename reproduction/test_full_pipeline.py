@@ -8,6 +8,7 @@ import pytest
 from openai import OpenAI
 
 from reproduction import run_experiments as runner
+from reproduction.tool_reasoning_compat import install_tool_reasoning
 from reproduction.trajectory_compat import install_mapped_trajectory_reader
 from skillopt.config import flatten_config, load_config
 from skillopt.envs.task_output import task_output_segment
@@ -15,7 +16,8 @@ from skillopt.gradient import reflect
 from skillopt.model import azure_openai
 
 
-def test_both_model_roles_send_high_and_audit_excludes_secrets(tmp_path, monkeypatch):
+@pytest.mark.parametrize("with_tools", [False, True])
+def test_both_model_roles_send_high_and_audit_excludes_secrets(tmp_path, monkeypatch, with_tools):
     captured = []
 
     def respond(request):
@@ -40,10 +42,22 @@ def test_both_model_roles_send_high_and_audit_excludes_secrets(tmp_path, monkeyp
     monkeypatch.setattr(azure_openai, "TARGET_DEPLOYMENT", runner.MODEL)
     monkeypatch.setattr(azure_openai, "REASONING_EFFORT", "high")
     audit_path = tmp_path / "requests.jsonl"
+    if with_tools:
+        install_tool_reasoning()
     runner.install_request_audit(audit_path)
-    for call in (azure_openai.chat_optimizer, azure_openai.chat_target):
-        answer, _ = call(system="private-system", user="private-prompt", retries=1, max_completion_tokens=16384)
-        assert answer == "OK"
+    if with_tools:
+        tools = [{"type": "function", "function": {
+            "name": "read", "description": "Read a document", "parameters": {"type": "object", "properties": {}},
+        }}]
+        for call in (azure_openai.chat_optimizer_messages, azure_openai.chat_target_messages):
+            answer, _ = call(messages=[{"role": "user", "content": "private-prompt"}], tools=tools,
+                             retries=1, max_completion_tokens=16384)
+            assert answer == "OK"
+        assert all(p["tools"] == tools for p in captured)
+    else:
+        for call in (azure_openai.chat_optimizer, azure_openai.chat_target):
+            answer, _ = call(system="private-system", user="private-prompt", retries=1, max_completion_tokens=16384)
+            assert answer == "OK"
     assert len(captured) == 2
     assert all(p["model"] == runner.MODEL and p["reasoning_effort"] == "high" for p in captured)
     audit_text = audit_path.read_text()

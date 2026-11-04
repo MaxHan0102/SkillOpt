@@ -1,0 +1,103 @@
+{
+  "benchmark": "officeqa",
+  "scope": "functional smoke only; one real item per official split",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "request_attempts": 9,
+  "all_requests_match": true,
+  "model_tool_errors": 0,
+  "steps": [
+    {
+      "step": 1,
+      "action": "accept_new_best",
+      "n_patches": 1,
+      "selection_hard": 1.0
+    }
+  ],
+  "token_summary": {
+    "analyst": {
+      "calls": 1,
+      "prompt_tokens": 4798,
+      "completion_tokens": 170,
+      "total_tokens": 4968
+    },
+    "rollout": {
+      "calls": 8,
+      "prompt_tokens": 24768,
+      "completion_tokens": 927,
+      "total_tokens": 25695
+    },
+    "_total": {
+      "calls": 9,
+      "prompt_tokens": 29566,
+      "completion_tokens": 1097,
+      "total_tokens": 30663
+    }
+  },
+  "results": {
+    "selection_eval_baseline": [
+      {
+        "id": "UID0001",
+        "hard": 0,
+        "soft": 0.07999999999999999,
+        "agent_ok": true,
+        "n_turns": 6,
+        "oracle_parsed_pages_included": true,
+        "oracle_parsed_pages_chars": 5078,
+        "use_local_tools": true
+      }
+    ],
+    "steps/step_0001/rollout": [
+      {
+        "id": "UID0002",
+        "hard": 0,
+        "soft": 0.05555555555555556,
+        "agent_ok": true,
+        "n_turns": 2,
+        "oracle_parsed_pages_included": true,
+        "oracle_parsed_pages_chars": 5311,
+        "use_local_tools": true
+      }
+    ],
+    "steps/step_0001/selection_eval": [
+      {
+        "id": "UID0001",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 2,
+        "oracle_parsed_pages_included": true,
+        "oracle_parsed_pages_chars": 5078,
+        "use_local_tools": true
+      }
+    ],
+    "test_eval": [
+      {
+        "id": "UID0003",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 4,
+        "oracle_parsed_pages_included": true,
+        "oracle_parsed_pages_chars": 7078,
+        "use_local_tools": true
+      }
+    ],
+    "test_eval_baseline": [
+      {
+        "id": "UID0003",
+        "hard": 0,
+        "soft": 0.05555555555555556,
+        "agent_ok": true,
+        "n_turns": 2,
+        "oracle_parsed_pages_included": true,
+        "oracle_parsed_pages_chars": 7078,
+        "use_local_tools": true
+      }
+    ]
+  },
+  "test_baseline_hard": 0.0,
+  "test_best_hard": 1.0,
+  "test_final_hard": 1.0,
+  "note": "No-edit skips are legitimate optimizer decisions; slow/meta updates are disabled in this one-epoch smoke."
+}

@@ -1,4 +1,4 @@
-"""Materialize DocVQA/SpreadsheetBench official splits and verify ALFWorld assets."""
+"""Materialize official data for the four additional benchmarks."""
 from __future__ import annotations
 
 import argparse
@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 from reproduction.prepare_official_data import digest, download, load_json, manifest_items  # noqa: E402
 
 DATA = ROOT / "reproduction" / "data"
-BENCHMARKS = ("docvqa", "spreadsheetbench", "alfworld")
+BENCHMARKS = ("docvqa", "spreadsheetbench", "alfworld", "officeqa")
 
 
 def spreadsheet_filename_fix() -> list[dict]:
@@ -36,6 +36,10 @@ def spreadsheet_filename_fix() -> list[dict]:
 
 
 def prepare(benchmark: str) -> dict:
+    if benchmark == "officeqa":
+        from reproduction.prepare_officeqa_data import prepare as prepare_officeqa
+
+        return prepare_officeqa()
     if benchmark == "alfworld":
         record = load_json(DATA / "alfworld" / "provenance.json")
         counts = {}
