@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-11-05T00:57:33.968008+08:00",
+  "profile": "alfworld",
+  "environment": "max-skillopt-alfworld",
+  "python": "3.11.18",
+  "model_api_calls": 0,
+  "packages": {
+    "skillopt": "0.2.0",
+    "openai": "3.45.0",
+    "numpy": "1.26.4",
+    "alfworld": "0.4.2",
+    "textworld": "1.6.2",
+    "gymnasium": "1.4.0",
+    "omegaconf": "2.3.0"
+  },
+  "results": {
+    "alfworld": {
+      "status": "passed",
+      "official_gamefiles_present": 191,
+      "checks": [
+        "official_environment_builder",
+        "multiprocess_worker",
+        "reset",
+        "step",
+        "close"
+      ],
+      "sample_games": [
+        {
+          "split": "train",
+          "id": "train:0000",
+          "reset": true,
+          "step": true
+        },
+        {
+          "split": "val",
+          "id": "val:0000",
+          "reset": true,
+          "step": true
+        },
+        {
+          "split": "test",
+          "id": "test:0000",
+          "reset": true,
+          "step": true
+        }
+      ]
+    }
+  }
+}

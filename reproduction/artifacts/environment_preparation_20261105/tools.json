@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-11-05T00:52:00.135681+08:00",
+  "profile": "tools",
+  "environment": "max-skillopt-tools",
+  "python": "3.11.18",
+  "model_api_calls": 0,
+  "packages": {
+    "skillopt": "0.2.0",
+    "openai": "3.45.0",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "Pillow": "12.3.0",
+    "datasets": "5.1.0"
+  },
+  "results": {
+    "docvqa": {
+      "status": "passed",
+      "checks": [
+        "adapter_import",
+        "image_encoding",
+        "multimodal_messages",
+        "answer_scoring"
+      ]
+    },
+    "officeqa": {
+      "status": "passed",
+      "checks": [
+        "adapter_import",
+        "local_document_read",
+        "local_document_search"
+      ]
+    },
+    "spreadsheetbench": {
+      "status": "passed",
+      "checks": [
+        "adapter_import",
+        "pandas_xlsx_io",
+        "official_code_executor",
+        "official_workbook_comparison"
+      ]
+    }
+  }
+}

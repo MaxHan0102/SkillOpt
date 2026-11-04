@@ -1,0 +1,25 @@
+{
+  "source": "official alfworld-download text-game assets",
+  "archives": [
+    {
+      "url": "https://github.com/alfworld/alfworld/releases/download/0.2.2/json_2.1.1_json.zip",
+      "sha256": "25171f16e20ad7b048c47275c45b0babf3aa1cbab29cec97387922350a9844bc",
+      "size_bytes": 72018818
+    },
+    {
+      "url": "https://github.com/alfworld/alfworld/releases/download/0.2.2/json_2.1.1_pddl.zip",
+      "sha256": "913942ebed06659ea0da2f8122512d98bc6add30d84961ca803132d8fbcad585",
+      "size_bytes": 34881784
+    },
+    {
+      "url": "https://github.com/alfworld/alfworld/releases/download/0.4.0/json_2.1.2_tw-pddl.zip",
+      "sha256": "eea90499df27b9cb3147d1d1927264146d38194b575e25f70a82875545742dcb",
+      "size_bytes": 36493542
+    }
+  ],
+  "official_skillopt_split_counts": {
+    "train": 39,
+    "val": 18,
+    "test": 134
+  }
+}

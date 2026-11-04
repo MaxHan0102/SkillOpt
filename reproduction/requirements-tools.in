@@ -1,0 +1,6 @@
+# DocVQA, OfficeQA (offline tools), SpreadsheetBench and data materialization.
+-r requirements-terra-high.txt
+pandas>=2.2,<3
+Pillow>=11,<13
+datasets>=4,<6
+huggingface-hub>=0.34,<2

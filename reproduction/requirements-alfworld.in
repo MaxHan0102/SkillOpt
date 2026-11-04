@@ -1,0 +1,8 @@
+# Official text-only AlfredTWEnv; the visual THOR/BUTLER stack is not used.
+-e .[alfworld,dev]
+alfworld==0.4.2
+textworld[pddl]==1.6.2
+gymnasium>=0.29,<2
+omegaconf==2.3.0
+numpy==1.26.4
+openai==3.45.0
