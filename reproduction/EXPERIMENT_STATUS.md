@@ -62,5 +62,20 @@ SearchQA 结果和技能见
 2026-11-05：另外四项任务的环境和配置已准备；DocVQA、SpreadsheetBench、
 ALFWorld、OfficeQA 的完整官方划分数据与真实 API 小规模训练流程检查已完成。
 OfficeQA 在用户取得授权后使用官方端点下载，保留默认 HF 镜像设置。
-这四项完整实验尚未启动。
-详见 [`READINESS.md`](READINESS.md)。
+这四项完整实验于 **2026-11-05 02:00（Asia/Shanghai）** 启动，四个独立 tmux
+进程并发运行，代码版本 `e9b0e95`，模型和优化器均为 Terra / High。
+与前两项一致，使用完整官方划分、4 个 epoch、官方反思优化流程，
+启用 slow update 和 meta skill，最终评测初始／最优／最终三种 Skill。
+预计常规优化步数：DocVQA 12、OfficeQA 8、SpreadsheetBench 8、ALFWorld 4。
+启动后已核对四个会话存活、实际 API 请求及初始验证集 rollout 正在推进，尚无全量成绩。
+启动前再次核对四项环境、数据和真实 API smoke 报告；相关回归检查 **75 passed**。
+
+```bash
+cd /root/max/SkillOpt
+reproduction/.conda/max-skillopt/bin/python reproduction/run_four_benchmarks.py status \
+  --run-root reproduction/outputs/terra_high_four_20261105
+```
+
+四项原始输出与日志均在 `reproduction/outputs/terra_high_four_20261105/`。
+详细设置和启动方式见 [`FOUR_BENCHMARKS.md`](FOUR_BENCHMARKS.md)，
+数据与小规模验证说明见 [`READINESS.md`](READINESS.md)。

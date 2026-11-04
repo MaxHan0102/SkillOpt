@@ -101,7 +101,9 @@ bash reproduction/benchmark_python.sh docvqa reproduction/run_benchmark.py smoke
 
 ## 完整运行
 
-完整 Benchmark 训练尚未启动。以下命令使用完整数据和官方优化流程，在前台运行：
+四项完整实验已于 2026-11-05 02:00（Asia/Shanghai）并发启动，输出根目录为
+`reproduction/outputs/terra_high_four_20261105/`。后台运行、查询进度及完整设置见
+[`FOUR_BENCHMARKS.md`](FOUR_BENCHMARKS.md)。以下命令可在新目录单独前台运行：
 
 ```bash
 bash reproduction/benchmark_python.sh docvqa reproduction/run_benchmark.py train docvqa \
