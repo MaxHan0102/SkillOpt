@@ -1,4 +1,4 @@
-_base_: ../../../configs/searchqa/default.yaml
+_base_: ../../configs/searchqa/default.yaml
 
 model:
   backend: openai_compatible
@@ -35,7 +35,7 @@ evaluation:
   eval_test: true
 
 env:
-  split_dir: reproduction/sub2api/data/searchqa_smoke
+  split_dir: reproduction/data/searchqa_smoke
   workers: 2
   exec_timeout: 120
   max_completion_tokens: 2048

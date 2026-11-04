@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repro_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$repro_dir/../.."
+cd "$repro_dir/.."
 if [[ -f "$repro_dir/.env" ]]; then
   set -a
   source "$repro_dir/.env"
   set +a
 fi
-export OPENAI_COMPATIBLE_BASE_URL="${SUB2API_BASE_URL:-${OPENAI_COMPATIBLE_BASE_URL:-}}"
-export OPENAI_COMPATIBLE_API_KEY="${SUB2API_API_KEY:-${MAXAPI_API_KEY:-${OPENAI_COMPATIBLE_API_KEY:-}}}"
-: "${OPENAI_COMPATIBLE_BASE_URL:?Set SUB2API_BASE_URL in reproduction/sub2api/.env or the environment}"
-: "${OPENAI_COMPATIBLE_API_KEY:?Export SUB2API_API_KEY or MAXAPI_API_KEY}"
-model="${SUB2API_MODEL:-gpt-6.1-sol}"
-run_dir="${1:-$repro_dir/outputs/sub2api_smoke_$(date +%Y%m%d_%H%M%S)}"
+export OPENAI_COMPATIBLE_BASE_URL="${OPENAI_COMPATIBLE_BASE_URL:-${SUB2API_BASE_URL:-}}"
+export OPENAI_COMPATIBLE_API_KEY="${OPENAI_COMPATIBLE_API_KEY:-${MAXAPI_API_KEY:-${SUB2API_API_KEY:-}}}"
+: "${OPENAI_COMPATIBLE_BASE_URL:?Set OPENAI_COMPATIBLE_BASE_URL in reproduction/.env or the environment}"
+: "${OPENAI_COMPATIBLE_API_KEY:?Export OPENAI_COMPATIBLE_API_KEY or MAXAPI_API_KEY}"
+model="${OPENAI_COMPATIBLE_MODEL:-${SUB2API_MODEL:-gpt-6.1-sol}}"
+run_dir="${1:-$repro_dir/outputs/searchqa_smoke_$(date +%Y%m%d_%H%M%S)}"
 if [[ -e "$run_dir" ]]; then
   echo "Output directory already exists: $run_dir; choose a new directory." >&2
   exit 1
