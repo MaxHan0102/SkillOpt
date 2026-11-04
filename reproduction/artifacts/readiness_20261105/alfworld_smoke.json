@@ -1,0 +1,79 @@
+{
+  "benchmark": "alfworld",
+  "scope": "functional smoke only; one real item per official split",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "request_attempts": 19,
+  "all_requests_match": true,
+  "model_tool_errors": 0,
+  "steps": [
+    {
+      "step": 1,
+      "action": "skip_no_patches",
+      "n_patches": 0,
+      "selection_hard": null
+    }
+  ],
+  "token_summary": {
+    "analyst": {
+      "calls": 1,
+      "prompt_tokens": 1395,
+      "completion_tokens": 104,
+      "total_tokens": 1499
+    },
+    "rollout": {
+      "calls": 18,
+      "prompt_tokens": 21166,
+      "completion_tokens": 811,
+      "total_tokens": 21977
+    },
+    "_total": {
+      "calls": 19,
+      "prompt_tokens": 22561,
+      "completion_tokens": 915,
+      "total_tokens": 23476
+    }
+  },
+  "results": {
+    "selection_eval_baseline": [
+      {
+        "id": "val:0000",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 4
+      }
+    ],
+    "steps/step_0001/rollout": [
+      {
+        "id": "train:0000",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 4
+      }
+    ],
+    "test_eval": [
+      {
+        "id": "test:0000",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 5
+      }
+    ],
+    "test_eval_baseline": [
+      {
+        "id": "test:0000",
+        "hard": 1,
+        "soft": 1.0,
+        "agent_ok": true,
+        "n_turns": 5
+      }
+    ]
+  },
+  "test_baseline_hard": 1.0,
+  "test_best_hard": 1.0,
+  "test_final_hard": 1.0,
+  "note": "No-edit skips are legitimate optimizer decisions; slow/meta updates are disabled in this one-epoch smoke."
+}

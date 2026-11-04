@@ -58,3 +58,8 @@ SearchQA 结果和技能见
 原始完整输出仍在 `reproduction/outputs/terra_high_20261104/`。
 初次运行代码为 `ef03768`；修复重跑的代码版本和配置哈希保存在本地运行元数据中。
 环境、网关与恢复说明见 [`FULL_EXPERIMENTS.md`](FULL_EXPERIMENTS.md)。
+
+2026-11-05：另外四项任务的环境和配置已准备；DocVQA、SpreadsheetBench、
+ALFWorld 的完整官方划分数据与真实 API 小规模训练流程检查已完成。
+这三项完整实验尚未启动；OfficeQA 因数据授权未取得，按用户要求暂缓。
+详见 [`READINESS.md`](READINESS.md)。

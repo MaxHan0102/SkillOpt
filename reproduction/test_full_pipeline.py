@@ -136,3 +136,17 @@ def test_safe_id_reflection_prompt_remains_byte_identical(tmp_path, monkeypatch)
     monkeypatch.setattr(reflect, "fmt_minibatch_trajectories", reflect.fmt_minibatch_trajectories)
     install_mapped_trajectory_reader()
     assert reflect.fmt_minibatch_trajectories(items, str(tmp_path)) == expected
+
+
+def test_raw_alfworld_colon_id_preserves_the_saved_trajectory(tmp_path, monkeypatch):
+    directory = tmp_path / "train:0000"
+    directory.mkdir()
+    (directory / "conversation.json").write_text(json.dumps([
+        {"step": 0, "action": "look", "env_feedback": "You see a desk lamp."},
+    ]))
+    items = [{"id": "train:0000", "n_turns": 1}]
+    expected = reflect.fmt_minibatch_trajectories(items, str(tmp_path))
+    assert "You see a desk lamp." in expected
+    monkeypatch.setattr(reflect, "fmt_minibatch_trajectories", reflect.fmt_minibatch_trajectories)
+    install_mapped_trajectory_reader()
+    assert reflect.fmt_minibatch_trajectories(items, str(tmp_path)) == expected

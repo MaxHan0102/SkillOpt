@@ -80,14 +80,13 @@ ALFWorld 数据来源摘要保存在
 
 ## 数据与后续实验的边界
 
-本次准备的是四个 Benchmark 的软件运行环境，以及 ALFWorld 模拟器的官方游戏资产。
-没有启动训练或评测模型。其他三个任务仍需按官方 ID 清单整理完整数据：
+后续已补齐 DocVQA、SpreadsheetBench 的完整数据整理和三项任务的 Terra / High
+配置，并完成真实 API 小规模训练流程检查，包括个人网关的图片输入。
+ALFWorld 的官方游戏资产也已就绪。完整 Benchmark 训练尚未启动。
 
-- DocVQA：下载官方 validation 数据，并按 107 / 53 / 374 划分提取题目和图片。
-  本地图片消息已验证；个人网关的真实图像输入支持尚未发起 API 验证。
-- OfficeQA：官方数据源受 Hugging Face 授权限制；需要有访问权的账号下载题目和文档。
-  本地工具环境已准备好；默认 offline 模式不需要第三方搜索 API。
-- SpreadsheetBench：下载 Verified 400 数据包，按 80 / 40 / 280 划分整理题目与表格。
+OfficeQA 官方数据源受 Hugging Face 授权限制；用户尚无权限，按要求暂缓。
+默认 offline 模式的软件与本地工具已准备好。
 
-完整数据源与划分定义见官方 [`data/README.md`](../data/README.md)。
-上述数据准备不能用仓库中的 ID 清单替代；ID 清单本身不足以执行问答或表格任务。
+当前就绪状态、数据来源与校验、真实 API 检查结果、启动命令统一见
+[`READINESS.md`](READINESS.md)。完整数据源与划分定义见官方
+[`data/README.md`](../data/README.md)。

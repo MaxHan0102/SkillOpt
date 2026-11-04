@@ -20,4 +20,5 @@ export HF_HOME="$repro_dir/.cache/huggingface"
 export HF_DATASETS_CACHE="$repro_dir/.cache/huggingface/datasets"
 export ALFWORLD_DATA="$repro_dir/data/alfworld"
 export PATH="$env_prefix/bin:$PATH"
+export PYTHONUNBUFFERED=1
 exec "$env_prefix/bin/python" "$@"

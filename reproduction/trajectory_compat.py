@@ -24,7 +24,15 @@ def install_mapped_trajectory_reader() -> None:
             if segment != task_id:
                 conversation = Path(prediction_dir) / segment / "conversation.json"
                 if not conversation.is_file():
-                    raise FileNotFoundError(f"Mapped trajectory missing for {task_id}")
+                    # ALFWorld still writes raw IDs such as train:0000 on Linux.
+                    # Only use a single confined directory component as fallback.
+                    root = Path(prediction_dir).resolve()
+                    raw = root / task_id / "conversation.json"
+                    if (Path(task_id).name == task_id and "\\" not in task_id
+                            and raw.resolve().is_relative_to(root) and raw.is_file()):
+                        prepared.append(item)
+                        continue
+                    raise FileNotFoundError(f"Trajectory missing for {task_id}")
                 prepared.append({**item, "id": segment})
                 replacements[segment] = task_id
             else:

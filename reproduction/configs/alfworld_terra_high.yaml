@@ -1,0 +1,16 @@
+_base_: ../../configs/alfworld/default.yaml
+model:
+  backend: azure_openai
+  optimizer_backend: openai_chat
+  target_backend: openai_chat
+  optimizer: gpt-6.1-terra
+  target: gpt-6.1-terra
+  reasoning_effort: high
+  azure_openai_auth_mode: openai_compatible
+gradient:
+  analyst_workers: 2
+env:
+  split_dir: data/alfworld_path_split
+  workers: 2
+  max_api_workers: 2
+  exec_timeout: 600

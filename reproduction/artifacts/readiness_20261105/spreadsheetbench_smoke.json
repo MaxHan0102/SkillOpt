@@ -1,0 +1,87 @@
+{
+  "benchmark": "spreadsheetbench",
+  "scope": "functional smoke only; one real item per official split",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "request_attempts": 6,
+  "all_requests_match": true,
+  "model_tool_errors": 0,
+  "steps": [
+    {
+      "step": 1,
+      "action": "skip_no_patches",
+      "n_patches": 0,
+      "selection_hard": null
+    }
+  ],
+  "token_summary": {
+    "analyst": {
+      "calls": 1,
+      "prompt_tokens": 2803,
+      "completion_tokens": 86,
+      "total_tokens": 2889
+    },
+    "rollout": {
+      "calls": 5,
+      "prompt_tokens": 4970,
+      "completion_tokens": 1638,
+      "total_tokens": 6608
+    },
+    "_total": {
+      "calls": 6,
+      "prompt_tokens": 7773,
+      "completion_tokens": 1724,
+      "total_tokens": 9497
+    }
+  },
+  "results": {
+    "selection_eval_baseline": [
+      {
+        "id": "45635",
+        "hard": 0,
+        "soft": 0.0,
+        "llm_ok": true,
+        "code_ok": true,
+        "exec_ok": true,
+        "n_turns": 1
+      }
+    ],
+    "steps/step_0001/rollout": [
+      {
+        "id": "32438",
+        "hard": 1,
+        "soft": 1.0,
+        "llm_ok": true,
+        "code_ok": true,
+        "exec_ok": true,
+        "n_turns": 2
+      }
+    ],
+    "test_eval": [
+      {
+        "id": "52532",
+        "hard": 0,
+        "soft": 0.0,
+        "llm_ok": true,
+        "code_ok": true,
+        "exec_ok": true,
+        "n_turns": 1
+      }
+    ],
+    "test_eval_baseline": [
+      {
+        "id": "52532",
+        "hard": 0,
+        "soft": 0.0,
+        "llm_ok": true,
+        "code_ok": true,
+        "exec_ok": true,
+        "n_turns": 1
+      }
+    ]
+  },
+  "test_baseline_hard": 0.0,
+  "test_best_hard": 0.0,
+  "test_final_hard": 0.0,
+  "note": "No-edit skips are legitimate optimizer decisions; slow/meta updates are disabled in this one-epoch smoke."
+}
