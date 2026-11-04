@@ -1,0 +1,76 @@
+{
+  "benchmark": "livemathematicianbench",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "completed_at": "2026-11-04T22:10:06+08:00",
+  "test": {
+    "baseline": {
+      "n": 125,
+      "hard": 0.592,
+      "soft": 0.592,
+      "api_failures": 0
+    },
+    "best": {
+      "n": 125,
+      "hard": 0.736,
+      "soft": 0.736,
+      "api_failures": 0
+    },
+    "final": {
+      "n": 125,
+      "hard": 0.688,
+      "soft": 0.688,
+      "api_failures": 0
+    }
+  },
+  "baseline_selection_hard": 0.6470588235294118,
+  "best_selection_hard": 1.0,
+  "total_steps": 4,
+  "total_accepts": 2,
+  "total_rejects": 2,
+  "token_summary": {
+    "analyst": {
+      "calls": 22,
+      "prompt_tokens": 279127,
+      "completion_tokens": 7790,
+      "total_tokens": 286917
+    },
+    "merge": {
+      "calls": 8,
+      "prompt_tokens": 11814,
+      "completion_tokens": 3767,
+      "total_tokens": 15581
+    },
+    "meta_skill": {
+      "calls": 3,
+      "prompt_tokens": 46278,
+      "completion_tokens": 890,
+      "total_tokens": 47168
+    },
+    "ranking": {
+      "calls": 2,
+      "prompt_tokens": 2610,
+      "completion_tokens": 263,
+      "total_tokens": 2873
+    },
+    "rollout": {
+      "calls": 737,
+      "prompt_tokens": 1055766,
+      "completion_tokens": 321194,
+      "total_tokens": 1376960
+    },
+    "slow_update": {
+      "calls": 3,
+      "prompt_tokens": 47347,
+      "completion_tokens": 1871,
+      "total_tokens": 49218
+    },
+    "_total": {
+      "calls": 775,
+      "prompt_tokens": 1442942,
+      "completion_tokens": 335775,
+      "total_tokens": 1778717
+    }
+  },
+  "total_wall_time_s": 2942.0
+}
