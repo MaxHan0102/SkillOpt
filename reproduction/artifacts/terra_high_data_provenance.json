@@ -1,0 +1,44 @@
+{
+  "searchqa": {
+    "benchmark": "searchqa",
+    "source_repo": "lucadiliello/searchqa",
+    "source_revision": "c1a979068ba118d85467179b704031d113d689cc",
+    "source_file_sha256": {
+      "train-00000-of-00001-55e7116bea868a35.parquet": "effe1d14befa8a77d294d17dd10f34d20c47f3a27530c7d6d3429502411e2beb",
+      "validation-00000-of-00001-2092e81367c2ca98.parquet": "45b85051c127c6ad17dbb10fc454b00c776b86201aa734a6c7772494689e82a1"
+    },
+    "official_manifest_sha256": "b19de95cc4079e065525d25fe65859618887d69c9ffd647dbda61fd6015e2f2a",
+    "counts": {
+      "train": 400,
+      "val": 200,
+      "test": 1400
+    },
+    "split_sha256": {
+      "train": "19d6c4111129aaaf83003b9367da9c8bdcaae205f3ec7bd05f4f293fad0ff43b",
+      "val": "c6285bdfd7ce62ae72c2bd49797cd01a1d1782fd8fb79f0eb5416b54af56fd40",
+      "test": "28dc13a57d12e8773402260595431b41d688468aa0ae267adb30a1b56f2a7eea"
+    }
+  },
+  "livemathematicianbench": {
+    "benchmark": "livemathematicianbench",
+    "source_repo": "LiveMathematicianBench/LiveMathematicianBench",
+    "source_revision": "b72450f6ce96c26158d64d945a5d31ef7727be41",
+    "source_file_sha256": {
+      "data/202511/qa_202511_final.json": "5dafc9d65c0b593a7f3be5fc62fb7ad741bccff51f22c1fce5baa2564a0b24ea",
+      "data/202512/qa_202512_final.json": "e54b5300763db319f36efd4ddc4ee97f24da1381d9de9d0a71ea815429548561",
+      "data/202601/qa_202601_final.json": "15b36733086c9a348f8e3227f31a411819dfeeaee5196d618a02ce714ca29027",
+      "data/202602/qa_202602_final.json": "39092b91f0045b689522d8ddcc3188ea24c33d590da79826ef7f036c71e52611"
+    },
+    "official_manifest_sha256": "9eec745e20bfb49f99858f4fbd1ba71bbc8886e804f36fbb960f3d0fb1969b37",
+    "counts": {
+      "train": 35,
+      "val": 17,
+      "test": 125
+    },
+    "split_sha256": {
+      "train": "0b79db56ee9c99ae50a3cec28a1f55f9199d590b86cafc252f5d43d5650d9610",
+      "val": "e5939339b764ffcf03d824459b0c0e23d876fd7467e6ecb2384e8b8c9f2b3aa0",
+      "test": "526e6f64bea71572cfae347ab72763f997a2f6b945f353355c4266251876d3e2"
+    }
+  }
+}

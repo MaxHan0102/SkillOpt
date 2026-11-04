@@ -1,5 +1,8 @@
 # SkillOpt 简易复现
 
+GPT-6.1 Terra / High 的两个完整官方 Benchmark 实验见
+[`FULL_EXPERIMENTS.md`](FULL_EXPERIMENTS.md)。以下保留先前的小样本运行说明。
+
 官方源码：<https://github.com/microsoft/SkillOpt>
 
 个人 fork：<https://github.com/MaxHan0102/SkillOpt>
