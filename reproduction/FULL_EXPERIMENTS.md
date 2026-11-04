@@ -16,8 +16,8 @@
 
 流程包括完整数据准备、初始技能验证、4 epoch rollout/reflect/aggregate/select/
 update/evaluate、严格验证门控、跨 epoch slow/meta update，最后由官方训练器
-分别评测初始、最优和最终技能的完整测试集。未启用样本截断、强制接受修改或
-额外推理工具。这是换用指定模型的新实验，不是论文原模型数值的复测。
+分别评测初始、最优和最终技能的完整测试集。未启用样本截断或额外推理工具。
+这是换用指定模型的新实验，不是论文原模型数值的复测。
 
 逐步修改使用严格验证门控；慢更新沿用官方默认
 `slow_update_gate_with_selection=false`，因此跨 epoch 慢更新本身不受该门控约束。
