@@ -3,6 +3,11 @@
 目的：在同一道题、相同设置下反复执行，检查成功／失败是否一致，以及回答和执行轨迹
 是否波动。只评测官方 test / valid_unseen，不训练、不反思、不修改 Skill。
 
+本次已于 **2026-11-05 12:12:52（Asia/Shanghai）** 启动六项并发全量测试，
+输出根目录为 `reproduction/outputs/stability_avg5_20261105/`，运行代码 `3e070ad`。
+18 次真实 API 启动检查均完成且无最终调用／执行错误，已确认六个后台会话存活并发出请求。
+启动摘要见 [`launch_summary.json`](artifacts/stability_avg5_20261105/launch_summary.json)。
+
 每项任务测试三个固定版本，各执行五次完整测试：
 
 - `none`：零字节 Skill 文件，保留官方基础任务提示词和工具。

@@ -1,0 +1,454 @@
+{
+  "recorded_at": "2026-11-05T12:14:18+08:00",
+  "started_at": "2026-11-05T12:12:52+08:00",
+  "code_revision": "3e070ad",
+  "phase": "six concurrent workers started; not final results",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "seed": 42,
+  "evolution": false,
+  "repeats_per_variant": 5,
+  "variants": [
+    "none",
+    "initial",
+    "final"
+  ],
+  "planned_full_evaluations": 90,
+  "planned_item_executions": 37275,
+  "avg_at_5_definition": "mean accuracy of five complete fresh runs; not pass@5",
+  "benchmarks": {
+    "searchqa": {
+      "test_count": 1400,
+      "source_experiment": "reproduction/outputs/terra_high_20261104/searchqa",
+      "source_initial_skill": "reproduction/outputs/terra_high_20261104/searchqa/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_20261104/searchqa/skills/skill_v0040.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "d3ed21de4a5216da7c3cd63acc2330dc78227524753c9d29573e6692f48d6709",
+        "final": "ce1950e74c885cfd35cedbd352e5127eca2964a44c3469962779887f24c91ab6"
+      },
+      "config_sha256": "9b485e22b3ef3349b509cfdb76d8bc23b66bd41ab07bba503858d5b4c2cddc8f",
+      "test_manifest_sha256": "b6056005ed8ffa03239a0295644d83968513bed80235927716fca14926ff11bc",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "reproduction/data/searchqa_official",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 4,
+        "max_api_workers": null,
+        "max_turns": 1,
+        "max_steps": null,
+        "max_tool_turns": null,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": null,
+        "shuffle_choices": null,
+        "use_theorem": null,
+        "use_sketch": null,
+        "search_mode": null,
+        "use_local_tools": null,
+        "data_dirs": null,
+        "data_root": null
+      }
+    },
+    "livemathematicianbench": {
+      "test_count": 125,
+      "source_experiment": "reproduction/outputs/terra_high_20261104_reflection_fix/livemathematicianbench",
+      "source_initial_skill": "reproduction/outputs/terra_high_20261104_reflection_fix/livemathematicianbench/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_20261104_reflection_fix/livemathematicianbench/skills/skill_v0004.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "84d545e168a047349fe4f6851708c6e34a7fc755c6ae3804775cbc671a8aab3f",
+        "final": "a51d0537e6d23fed221334383036e3c6ffdbd2bc90c13457a23f2339b925f1b9"
+      },
+      "config_sha256": "16f686282189da407ebe768d91057b2d35491ddbfdb1fb7d3c0c01ba61c55648",
+      "test_manifest_sha256": "6fc9eeada1834908e21ceeee857ec7a463593a1077287c1388ee0f73e1a9c628",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "reproduction/data/livemathematicianbench_official",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 4,
+        "max_api_workers": null,
+        "max_turns": 1,
+        "max_steps": null,
+        "max_tool_turns": null,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": null,
+        "shuffle_choices": true,
+        "use_theorem": false,
+        "use_sketch": false,
+        "search_mode": null,
+        "use_local_tools": null,
+        "data_dirs": null,
+        "data_root": null
+      }
+    },
+    "docvqa": {
+      "test_count": 374,
+      "source_experiment": "reproduction/outputs/terra_high_four_20261105/docvqa",
+      "source_initial_skill": "reproduction/outputs/terra_high_four_20261105/docvqa/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_four_20261105/docvqa/skills/skill_v0012.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "60fa9bae90590a50970c9d5d33d92eaa412bf1fa380bd00c8343430202795d97",
+        "final": "73491d5ab0834584662c33f5cfe1ccf5651407d510e81bd8bae48061f32fdc8a"
+      },
+      "config_sha256": "f34411c5696f8e48c67dd017944bc5fa93bd6d1d0dd882a1961b38fa55084a08",
+      "test_manifest_sha256": "ede36981c1f774b6b4aa983f6153f22e606b67a01fd75302b48311e8add3f64c",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "reproduction/data/docvqa_official",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 4,
+        "max_api_workers": null,
+        "max_turns": 1,
+        "max_steps": null,
+        "max_tool_turns": null,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": null,
+        "shuffle_choices": null,
+        "use_theorem": null,
+        "use_sketch": null,
+        "search_mode": null,
+        "use_local_tools": null,
+        "data_dirs": null,
+        "data_root": null
+      }
+    },
+    "officeqa": {
+      "test_count": 172,
+      "source_experiment": "reproduction/outputs/terra_high_four_20261105/officeqa",
+      "source_initial_skill": "reproduction/outputs/terra_high_four_20261105/officeqa/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_four_20261105/officeqa/skills/skill_v0008.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "9d377d1c2906981be23fef1ce93e349f2b63f8f49a40d9368f191d95987b20ab",
+        "final": "3de6967b606b3678205e643d703e545c2af9bb639f3f9e0bca2e57ddbb15472f"
+      },
+      "config_sha256": "9c35b7eeba7ccf615b70c3ba2747efa512e8d814054b3826fdd7f5f43f4f62b8",
+      "test_manifest_sha256": "563c30589e897f08161df4d2778578e14a8a2887391813e8d45c3d39eafd900d",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "reproduction/data/officeqa_official",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 2,
+        "max_api_workers": null,
+        "max_turns": null,
+        "max_steps": null,
+        "max_tool_turns": 24,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": null,
+        "shuffle_choices": null,
+        "use_theorem": null,
+        "use_sketch": null,
+        "search_mode": "offline",
+        "use_local_tools": null,
+        "data_dirs": [
+          "reproduction/data/officeqa_docs_official/treasury_bulletins_parsed"
+        ],
+        "data_root": null
+      }
+    },
+    "spreadsheetbench": {
+      "test_count": 280,
+      "source_experiment": "reproduction/outputs/terra_high_four_20261105/spreadsheetbench",
+      "source_initial_skill": "reproduction/outputs/terra_high_four_20261105/spreadsheetbench/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_four_20261105/spreadsheetbench/skills/skill_v0008.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "5c49d03008aea2c7151b134da20f2258a746c7323b76f0e49ec2c1ea8c131f26",
+        "final": "528d454241f0bb38482c31d0cba029c2d7ee564504e0d4f4a70f9a0b075bce72"
+      },
+      "config_sha256": "85dc5fa0a71c0fc9669ced52d8c969966ebfa5a406ef868966efc1793604186c",
+      "test_manifest_sha256": "6fc4269f4887208d8edd64a256e9cd6ebec0027daca483c4c98d8de4c800caf9",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "reproduction/data/spreadsheetbench_official",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 2,
+        "max_api_workers": null,
+        "max_turns": 30,
+        "max_steps": null,
+        "max_tool_turns": null,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": "multi",
+        "shuffle_choices": null,
+        "use_theorem": null,
+        "use_sketch": null,
+        "search_mode": null,
+        "use_local_tools": null,
+        "data_dirs": null,
+        "data_root": "reproduction/data/spreadsheetbench_verified_400"
+      }
+    },
+    "alfworld": {
+      "test_count": 134,
+      "source_experiment": "reproduction/outputs/terra_high_four_20261105/alfworld",
+      "source_initial_skill": "reproduction/outputs/terra_high_four_20261105/alfworld/skills/skill_v0000.md",
+      "source_final_skill": "reproduction/outputs/terra_high_four_20261105/alfworld/skills/skill_v0004.md",
+      "skill_sha256": {
+        "none": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "initial": "01bd29e825b81715e7b592e135a9a9d6d0f812a5e84dcd56b51cc1075247f941",
+        "final": "ab532f47912b10d6ba6727d2e87a1de87d2ecd2162b1a04aaa4e1d6aa5709df3"
+      },
+      "config_sha256": "8054289d39a9fc83d425b9253eab1f4d5f56f0366a36e5154fca04da1f4d3f7f",
+      "test_manifest_sha256": "34fc9439b0555e9bea76e2a7d1947953250e5a0cd9363d75ea64c2605ac0c33e",
+      "settings": {
+        "seed": 42,
+        "target_model": "gpt-6.1-terra",
+        "reasoning_effort": "high",
+        "split_dir": "data/alfworld_path_split",
+        "split_mode": "split_dir",
+        "split_seed": 42,
+        "workers": 2,
+        "max_api_workers": 2,
+        "max_turns": null,
+        "max_steps": 50,
+        "max_tool_turns": null,
+        "max_completion_tokens": 16384,
+        "exec_timeout": 600,
+        "test_env_num": 0,
+        "mode": null,
+        "shuffle_choices": null,
+        "use_theorem": null,
+        "use_sketch": null,
+        "search_mode": null,
+        "use_local_tools": null,
+        "data_dirs": null,
+        "data_root": null
+      }
+    }
+  },
+  "smoke_checks": {
+    "checked_at": "2026-11-05T12:12:52+08:00",
+    "checks": [
+      {
+        "benchmark": "searchqa",
+        "checked_at": "2026-11-05T12:06:50+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      },
+      {
+        "benchmark": "livemathematicianbench",
+        "checked_at": "2026-11-05T12:07:25+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      },
+      {
+        "benchmark": "docvqa",
+        "checked_at": "2026-11-05T12:07:00+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      },
+      {
+        "benchmark": "officeqa",
+        "checked_at": "2026-11-05T12:07:07+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.04347826086956522,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.05882352941176471,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      },
+      {
+        "benchmark": "spreadsheetbench",
+        "checked_at": "2026-11-05T12:07:49+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 0.0,
+            "soft": 0.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 1,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      },
+      {
+        "benchmark": "alfworld",
+        "checked_at": "2026-11-05T12:12:52+08:00",
+        "variants": {
+          "none": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 6,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "initial": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 5,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          },
+          "final": {
+            "n": 1,
+            "hard": 1.0,
+            "soft": 1.0,
+            "request_attempts": 5,
+            "execution_failures": 0,
+            "failure_flags": {},
+            "missing_trajectories": 0
+          }
+        }
+      }
+    ]
+  },
+  "resources_at_start": {
+    "checked_at": "2026-11-05T12:06:40+08:00",
+    "available_cpus": 32,
+    "available_memory_bytes": 106683928576,
+    "free_disk_bytes": 979066368000
+  }
+}

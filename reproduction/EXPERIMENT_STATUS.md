@@ -67,7 +67,14 @@ OfficeQA 在用户取得授权后使用官方端点下载，保留默认 HF 镜�
 与前两项一致，使用完整官方划分、4 个 epoch、官方反思优化流程，
 启用 slow update 和 meta skill，最终评测初始／最优／最终三种 Skill。
 预计常规优化步数：DocVQA 12、OfficeQA 8、SpreadsheetBench 8、ALFWorld 4。
-启动后已核对四个会话存活、实际 API 请求及初始验证集 rollout 正在推进，尚无全量成绩。
+四项现已全部结束，最后的 SpreadsheetBench 于 10:11 完成。
+初始／最优／最终 Skill 完整测试准确率分别为：DocVQA 81.02% / 92.51% / 91.18%，
+OfficeQA 18.02% / 62.79% / 62.79%，SpreadsheetBench 30.71% / 77.50% / 80.36%，
+ALFWorld 91.04% / 91.79% / 93.28%。
+DocVQA 三种测试各有 3 条上游 502 错误；OfficeQA 初始／最优分别有 4 / 28 条
+无有效输出，最终与最优相同并复用结果；SpreadsheetBench 三种测试各有 3 条代码执行失败。
+这三项为 `completed_with_errors`；ALFWorld 测试无调用错误，最优仍为初始 Skill，
+最优与初始分差包含生成随机性。所有失败均保留在计分分母中，尚未补跑替换。
 启动前再次核对四项环境、数据和真实 API smoke 报告；相关回归检查 **75 passed**。
 
 ```bash
@@ -79,3 +86,16 @@ reproduction/.conda/max-skillopt/bin/python reproduction/run_four_benchmarks.py 
 四项原始输出与日志均在 `reproduction/outputs/terra_high_four_20261105/`。
 详细设置和启动方式见 [`FOUR_BENCHMARKS.md`](FOUR_BENCHMARKS.md)，
 数据与小规模验证说明见 [`READINESS.md`](READINESS.md)。
+
+2026-11-05 12:12:52：六项 Benchmark 的独立稳定性测试已并发启动。
+固定 Terra / High、seed=42，只评测完整测试集；无 Skill／初始 Skill／实际最终 Skill
+各重新执行 5 次，共 90 次全量评测、37,275 次题目执行，不进行演化。
+18 次真实 API 启动检查均通过，六个后台会话存活并产生实际请求。
+本次新增统计检查后相关测试 **81 passed**。
+运行与轨迹波动统计见 [`STABILITY.md`](STABILITY.md)，查询命令如下：
+
+```bash
+cd /root/max/SkillOpt
+reproduction/.conda/max-skillopt/bin/python reproduction/run_stability.py status \
+  --run-root reproduction/outputs/stability_avg5_20261105
+```
