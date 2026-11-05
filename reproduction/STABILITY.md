@@ -89,6 +89,11 @@ reproduction/.conda/max-skillopt/bin/python reproduction/run_stability.py status
 
 ## 2026-11-06 额度恢复后续跑
 
+本次三个后台任务已于 **2026-11-06 01:26:19（Asia/Shanghai）** 并发启动，
+运行代码 `4df760b`。启动后已验证三个会话存活、实际请求携带 `.env` 中的 Key，
+且 ALFWorld 日志确认 `env_workers=8`。启动前相关检查 **83 passed**，
+使用文件凭据的真实 API 小检查成功。
+
 SearchQA、LiveMathematicianBench、DocVQA 已各完成 15/15 次，保留结果。
 OfficeQA 从 10/15 继续剩余 5 次，SpreadsheetBench 从 5/15 继续剩余 10 次。
 使用 `resume_stability.py` 枚举缺口；已完成的 `trial_metrics.json` 不覆盖。
@@ -125,3 +130,5 @@ bash reproduction/benchmark_python.sh alfworld reproduction/resume_stability.py 
 若新目录再次中断，去掉 `--fresh-from`，使用 `--archive-partial` 保留中断记录后续跑。
 本次实际后台会话与凭据验证记录见原根目录的 `resume_launch_20261106.json`；
 ALFWorld 新目录也保存自己的 `launch.json`，可用同一个 status 命令查询。
+原根目录的 `launch.json` 也已将 ALFWorld 指向新目录，因此前述统一查询命令
+会同时显示已完成三项、正在续跑两项和重新启动的 ALFWorld。

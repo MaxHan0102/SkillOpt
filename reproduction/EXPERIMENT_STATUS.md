@@ -99,3 +99,12 @@ cd /root/max/SkillOpt
 reproduction/.conda/max-skillopt/bin/python reproduction/run_stability.py status \
   --run-root reproduction/outputs/stability_avg5_20261105
 ```
+
+2026-11-06 01:26:19：额度恢复后已启动三项后台任务，所有新请求强制使用
+`reproduction/.env` 中的 Key，并核验实际 HTTP 认证头；不会回退到旧环境 Key。
+SearchQA、数学、DocVQA 已各完成 15/15 轮，保留现有结果；OfficeQA 从 10/15
+续跑剩余 5 轮，SpreadsheetBench 从 5/15 续跑剩余 10 轮。
+ALFWorld 在 `reproduction/outputs/stability_avg5_alfworld_restart_20261106/`
+从头执行 15 轮，环境与 API workers 均由 2 提高为 8，三个版本五次重复使用同一并发设置。
+启动检查确认三个后台会话存活、请求均为 Terra / High、认证来源为 `.env`，
+ALFWorld 日志确认实际采用 8-worker 分块。上述统一 status 命令已指向新的后台会话。
