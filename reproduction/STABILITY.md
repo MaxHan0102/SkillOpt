@@ -86,3 +86,42 @@ reproduction/.conda/max-skillopt/bin/python reproduction/run_stability.py status
 - `<benchmark>/worker.log`、`repeat_*_<variant>.log`：调度进度和各次评测日志。
 
 原始输出、数据、环境和凭据不提交 Git。运行器代码与说明同步至 fork。
+
+## 2026-11-06 额度恢复后续跑
+
+SearchQA、LiveMathematicianBench、DocVQA 已各完成 15/15 次，保留结果。
+OfficeQA 从 10/15 继续剩余 5 次，SpreadsheetBench 从 5/15 继续剩余 10 次。
+使用 `resume_stability.py` 枚举缺口；已完成的 `trial_metrics.json` 不覆盖。
+续跑保持原冻结配置与 Skill，试验开始前先取得 worker 锁；中断目录显式归档后
+重新执行该轮，日志追加，完成后自动重算稳定性汇总并更新状态。
+
+本次凭据强制从 `reproduction/.env` 的 `OPENAI_COMPATIBLE_BASE_URL` 和
+`OPENAI_COMPATIBLE_API_KEY` 读取。`--env-file-only` 禁止旧环境 Key 回退，
+并在每次真实 HTTP 请求前核对认证头与文件 Key 一致；审计仅保存凭据来源路径。
+Key 不出现在命令行、冻结配置、报告或 Git 中。
+
+```bash
+cd /root/max/SkillOpt
+bash reproduction/benchmark_python.sh officeqa reproduction/resume_stability.py \
+  --run-root reproduction/outputs/stability_avg5_20261105 --benchmark officeqa --env-file-only
+bash reproduction/benchmark_python.sh spreadsheetbench reproduction/resume_stability.py \
+  --run-root reproduction/outputs/stability_avg5_20261105 --benchmark spreadsheetbench --env-file-only
+```
+
+ALFWorld 从头执行全部 15 次，使用独立目录
+`reproduction/outputs/stability_avg5_alfworld_restart_20261106/`，复制原冻结的
+三个 Skill、模型与任务设置，只将 `workers` 和 `max_api_workers` 从 2 改为 8。
+所有新重复均采用相同的 8-worker 设置；旧 ALFWorld 输出不计入本次 avg@5。
+官方 ALFWorld 按 worker 数分块并派生环境种子，因此新运行独立统计，保留并发变更记录。
+
+为新目录准备输入并执行（`--fresh-from` 仅首次准备新目录时使用）：
+
+```bash
+bash reproduction/benchmark_python.sh alfworld reproduction/resume_stability.py \
+  --run-root reproduction/outputs/NEW_ALFWORLD_RUN --benchmark alfworld \
+  --fresh-from reproduction/outputs/stability_avg5_20261105 --workers 8 --env-file-only
+```
+
+若新目录再次中断，去掉 `--fresh-from`，使用 `--archive-partial` 保留中断记录后续跑。
+本次实际后台会话与凭据验证记录见原根目录的 `resume_launch_20261106.json`；
+ALFWorld 新目录也保存自己的 `launch.json`，可用同一个 status 命令查询。

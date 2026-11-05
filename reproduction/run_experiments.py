@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import fcntl
+import hmac
 import json
 import os
 import shlex
@@ -37,14 +38,29 @@ def write_json(path: Path, data: dict) -> None:
 def credentials() -> tuple[str, str]:
     # Read simple KEY=value settings without printing or persisting credentials.
     env_file = REPRO / ".env"
+    file_values = {}
     if env_file.exists():
         for line in env_file.read_text().splitlines():
             if line.strip() and not line.lstrip().startswith("#"):
-                key, separator, value = line.partition("=")
+                key, separator, value = line.strip().removeprefix("export ").partition("=")
                 if separator:
-                    os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
-    base = os.environ.get("OPENAI_COMPATIBLE_BASE_URL") or os.environ.get("SUB2API_BASE_URL", "")
-    key = os.environ.get("OPENAI_COMPATIBLE_API_KEY") or os.environ.get("MAXAPI_API_KEY", "")
+                    file_values[key.strip()] = value.strip().strip("\"'")
+    file_only = os.environ.get("SKILLOPT_CREDENTIAL_SOURCE") == "env_file"
+    if file_only:
+        # No fallback to inherited keys, even if .env has a missing/empty key.
+        base = file_values.get("OPENAI_COMPATIBLE_BASE_URL", "")
+        key = file_values.get("OPENAI_COMPATIBLE_API_KEY", "")
+        if not base or not key:
+            raise ValueError("reproduction/.env must define OPENAI_COMPATIBLE_BASE_URL and OPENAI_COMPATIBLE_API_KEY")
+        for name in ("MAXAPI_API_KEY", "SUB2API_API_KEY", "OPENAI_API_KEY"):
+            os.environ.pop(name, None)
+        os.environ["OPENAI_COMPATIBLE_BASE_URL"] = base
+        os.environ["OPENAI_COMPATIBLE_API_KEY"] = key
+    else:
+        for name, value in file_values.items():
+            os.environ.setdefault(name, value)
+        base = os.environ.get("OPENAI_COMPATIBLE_BASE_URL") or os.environ.get("SUB2API_BASE_URL", "")
+        key = os.environ.get("OPENAI_COMPATIBLE_API_KEY") or os.environ.get("MAXAPI_API_KEY", "")
     if not base or not key:
         raise ValueError("Set OPENAI_COMPATIBLE_BASE_URL and OPENAI_COMPATIBLE_API_KEY (or MAXAPI_API_KEY)")
     # Role-specific Azure settings must not silently override the selected gateway.
@@ -61,16 +77,21 @@ def install_request_audit(path: Path) -> None:
 
     original_factory = azure_openai._make_client
     lock = threading.Lock()
+    file_key = credentials()[1] if os.environ.get("SKILLOPT_CREDENTIAL_SOURCE") == "env_file" else None
 
     def audit(request) -> None:
         payload = json.loads(request.content)
         if payload.get("model") != MODEL or payload.get("reasoning_effort") != "high":
             raise ValueError("Refusing a request without gpt-6.1-terra and high reasoning")
+        if file_key is not None and not hmac.compare_digest(request.headers.get("authorization", ""), "Bearer " + file_key):
+            raise ValueError("Refusing a request whose API key does not match reproduction/.env")
         metadata = {
             "time": now(), "path": request.url.path,
             "model": payload["model"], "reasoning_effort": payload["reasoning_effort"],
             "max_completion_tokens": payload.get("max_completion_tokens"),
         }
+        if file_key is not None:
+            metadata["credential_source"] = "reproduction/.env"
         with lock, path.open("a") as output:
             output.write(json.dumps(metadata) + "\n")
 

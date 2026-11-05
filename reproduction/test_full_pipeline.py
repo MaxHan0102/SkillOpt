@@ -16,6 +16,49 @@ from skillopt.gradient import reflect
 from skillopt.model import azure_openai
 
 
+def test_file_credentials_override_stale_environment_and_audit_actual_header(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "REPRO", tmp_path)
+    (tmp_path / ".env").write_text('OPENAI_COMPATIBLE_BASE_URL="https://test.invalid/v1"\nOPENAI_COMPATIBLE_API_KEY="file-only-test-key"\n')
+    monkeypatch.setenv("SKILLOPT_CREDENTIAL_SOURCE", "env_file")
+    monkeypatch.setenv("OPENAI_COMPATIBLE_API_KEY", "stale-test-key")
+    monkeypatch.setenv("MAXAPI_API_KEY", "stale-legacy-key")
+    base, key = runner.credentials()
+    assert base == "https://test.invalid/v1" and key == "file-only-test-key"
+    sent = []
+
+    def response(request):
+        sent.append(request.headers["authorization"])
+        return httpx.Response(200, json={"id": "test", "choices": [], "object": "chat.completion", "created": 0, "model": runner.MODEL})
+
+    clients = [OpenAI(base_url=base, api_key=value,
+                      http_client=httpx.Client(transport=httpx.MockTransport(response)), max_retries=0)
+               for value in (key, "stale-test-key")]
+    monkeypatch.setattr(azure_openai, "_make_client", lambda role: clients.pop(0))
+    log = tmp_path / "audit.jsonl"
+    runner.install_request_audit(log)
+    for valid in (True, False):
+        client = azure_openai._make_client("target")
+        kwargs = {"model": runner.MODEL, "reasoning_effort": "high", "messages": [{"role": "user", "content": "OK"}]}
+        if valid:
+            client.chat.completions.create(**kwargs)
+        else:
+            with pytest.raises(Exception):
+                client.chat.completions.create(**kwargs)
+    assert sent == ["Bearer file-only-test-key"]
+    assert json.loads(log.read_text())["credential_source"] == "reproduction/.env"
+    assert "file-only-test-key" not in log.read_text()
+
+
+def test_missing_file_key_never_falls_back_to_environment(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "REPRO", tmp_path)
+    (tmp_path / ".env").write_text("OPENAI_COMPATIBLE_BASE_URL=https://test.invalid/v1\n")
+    monkeypatch.setenv("SKILLOPT_CREDENTIAL_SOURCE", "env_file")
+    monkeypatch.setenv("OPENAI_COMPATIBLE_API_KEY", "stale-test-key")
+    monkeypatch.setenv("MAXAPI_API_KEY", "stale-legacy-key")
+    with pytest.raises(ValueError, match="reproduction/.env must define"):
+        runner.credentials()
+
+
 @pytest.mark.parametrize("with_tools", [False, True])
 def test_both_model_roles_send_high_and_audit_excludes_secrets(tmp_path, monkeypatch, with_tools):
     captured = []
