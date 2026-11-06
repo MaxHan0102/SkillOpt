@@ -1,0 +1,12 @@
+  [skill] /root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/baseline/inputs/baseline.md (536 chars)
+  [DocVQADataLoader] train=107 val=53 test=374  (from reproduction/data/docvqa_official)
+
+  [eval] split=valid_unseen  items=1
+  [eval] out_root=/root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/baseline/evaluations/baseline
+============================================================
+    [rollout] 1/1 (acc=1.000) id=45842 hard=1
+
+============================================================
+  Results: hard=1.0000  soft=1.0000  (n=1)
+============================================================
+  Saved to: /root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/baseline/evaluations/baseline

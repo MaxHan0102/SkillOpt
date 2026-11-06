@@ -1,0 +1,1 @@
+{"time": "2026-11-06T19:29:02+08:00", "path": "/v1/chat/completions", "model": "gpt-6.1-terra", "reasoning_effort": "high", "max_completion_tokens": 16384, "credential_source": "reproduction/.env"}

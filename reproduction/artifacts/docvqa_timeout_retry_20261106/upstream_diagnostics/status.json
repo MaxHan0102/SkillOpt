@@ -1,0 +1,13 @@
+{
+  "phase": "completed_with_errors",
+  "started_at": "2026-11-06T19:29:02+08:00",
+  "worker_pid": 3871859,
+  "variant": "best",
+  "selected_ids": [
+    "58310",
+    "45837",
+    "45842"
+  ],
+  "updated_at": "2026-11-06T19:31:41+08:00",
+  "finished_at": "2026-11-06T19:42:43+08:00"
+}

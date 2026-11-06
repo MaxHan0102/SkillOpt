@@ -1,0 +1,44 @@
+[
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:33:37+08:00",
+    "status_code": 499,
+    "elapsed_seconds": 115.057,
+    "path": "/v1/chat/completions"
+  },
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:35:59+08:00",
+    "status_code": 499,
+    "elapsed_seconds": 257.232,
+    "path": "/v1/chat/completions"
+  },
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:36:45+08:00",
+    "status_code": 504,
+    "elapsed_seconds": 186.37,
+    "path": "/v1/chat/completions"
+  },
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:39:04+08:00",
+    "status_code": 499,
+    "elapsed_seconds": 139.218,
+    "path": "/v1/chat/completions"
+  },
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:40:13+08:00",
+    "status_code": 499,
+    "elapsed_seconds": 510.468,
+    "path": "/v1/chat/completions"
+  },
+  {
+    "skill": "best",
+    "time": "2026-11-06T19:41:14+08:00",
+    "status_code": 499,
+    "elapsed_seconds": 60.238,
+    "path": "/v1/chat/completions"
+  }
+]

@@ -1,0 +1,14 @@
+  [skill] /root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/best/inputs/best.md (1511 chars)
+  [DocVQADataLoader] train=107 val=53 test=374  (from reproduction/data/docvqa_official)
+
+  [eval] split=valid_unseen  items=3
+  [eval] out_root=/root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/best/evaluations/best
+============================================================
+    [rollout] 1/3 (acc=1.000) id=58310 hard=1
+    [rollout] 2/3 (acc=0.500) id=45842 TIMEOUT
+    [rollout] 3/3 (acc=0.333) id=45837 TIMEOUT
+
+============================================================
+  Results: hard=0.3333  soft=0.3333  (n=3)
+============================================================
+  Saved to: /root/max/SkillOpt/reproduction/outputs/docvqa_timeout_retry_20261106/cells/best/evaluations/best
