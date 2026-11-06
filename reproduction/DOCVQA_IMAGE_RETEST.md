@@ -94,3 +94,47 @@ HTTP 诊断实际记录到网关返回499和504，支持存在服务链路异常
 独立报告及脱敏逐题／HTTP 状态记录见
 [`artifacts/docvqa_timeout_retry_20261106/REPORT.md`](artifacts/docvqa_timeout_retry_20261106/REPORT.md)
 及同目录 `recorded_results.json`。
+
+## 用户要求通过代理补测剩余两题
+
+新增 `retry_docvqa_proxy.py`，仅对上一轮最优 Skill 仍超时的 `45837`、`45842`
+各再次执行一次。输出在 `reproduction/outputs/docvqa_proxy_retry_20261106/`。
+使用原始配置快照、同一批缩放图片和 Skill，Terra / High、seed=42、600／660秒超时规则不变。
+API Key 继续严格从 `.env` 获取并在实际请求发出前核对。
+
+这次按用户要求显式指定服务器的 `https_proxy`（兼容标准大小写变量及 ALL_PROXY），
+客户端设置 `trust_env=False`，所以历史入口写入的 NO_PROXY 不会导致绕过代理。
+每次发送前检查实际选中的底层连接池必须为 HTTPProxy／SOCKSProxy；没有代理配置或
+实际传输为直连时拒绝发送。代理地址和密码不写入分享日志。
+
+`proxy_route.json` 保存代理传输核验结论；`proxy_requests.jsonl` 为带题目 ID 和
+本地 attempt_id 的请求时间线；`http_responses.jsonl` 额外保留错误响应正文及可用的
+request-id／trace-id 头；`transport_errors.jsonl` 保存代理连接异常。
+错误内容中的实际 API Key、代理 URL 和代理密码会脱敏，认证头和 Cookie 不保存。
+成功记录与旧实验结果保留，374题的分母不变；这是再次异常补测合并，不是独立全量测试。
+
+```bash
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_docvqa_proxy.py check \
+  --run-root reproduction/outputs/docvqa_proxy_retry_20261106
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_docvqa_proxy.py report \
+  --run-root reproduction/outputs/docvqa_proxy_retry_20261106
+```
+
+相关37项离线检查及 Ruff 通过，包含实际 SDK 的代理传输选择、NO_PROXY 绕过防护、
+直连传输拒绝、HTTP错误正文／request-id记录，以及代理连接错误脱敏。
+
+本轮于2026-11-06 20:26:09–20:26:25（Asia/Shanghai）执行完毕，两题均在首次
+HTTP 请求中返回200且答对：`45837` 为6.648秒，`45842` 为15.538秒（至收到响应头）。
+实际代理连接池为 HTTPProxy，来源 `https_proxy`，每次发送均核验代理路径；
+实际请求的 `.env` Key、Terra、High 审计全部通过。没有 HTTP 错误、重试或任务超时。
+
+完整374题的初始／最优／最终 hard 分数现为81.82%／93.32%／91.98%，
+对应 ANLS 为90.81%／96.94%／96.02%。三种合并结果现均无执行异常。
+初始与最终 Skill 结果与上一轮逐字节一致，最优 Skill 仅替换两条指定记录。
+原始结果和所有历史补测结果保留，这些分数仍须标注为多轮异常补测合并结果。
+
+用户已明确要求通过代理发送请求。后续同类补测应采用显式代理入口并核验传输；
+历史直连入口保留供追溯，不应当作当前推荐的运行方式。
+完整分数、逐题状态、代理核验和 request-id 见
+[`artifacts/docvqa_proxy_retry_20261106/REPORT.md`](artifacts/docvqa_proxy_retry_20261106/REPORT.md)
+及同目录 `recorded_results.json`。

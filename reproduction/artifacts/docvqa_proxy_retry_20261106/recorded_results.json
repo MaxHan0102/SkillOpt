@@ -1,0 +1,138 @@
+{
+  "completed_at": "2026-11-06T20:26:25+08:00",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "credential_source": "reproduction/.env",
+  "summary": {
+    "updated_at": "2026-11-06T20:26:25+08:00",
+    "protocol": "User-requested explicit-proxy rerun of only the two remaining timeout occurrences; one evaluation per selected task, keep every outcome; same images, skills, Terra/High, seed and timeout; retain all 374 test tasks and preserve previous results; no evolution",
+    "test_count": 374,
+    "selected_executions": 2,
+    "verified_executions": 2,
+    "complete": true,
+    "variants": {
+      "baseline": {
+        "selected_ids": [],
+        "rerun_count": 0,
+        "rerun_correct": 0,
+        "rerun_execution_failures": 0,
+        "prior_composite_hard": 0.8181818181818182,
+        "composite_hard": 0.8181818181818182,
+        "composite_soft": 0.9080831978828117,
+        "denominator": 374
+      },
+      "best": {
+        "selected_ids": [
+          "45837",
+          "45842"
+        ],
+        "rerun_count": 2,
+        "rerun_correct": 2,
+        "rerun_execution_failures": 0,
+        "prior_composite_hard": 0.9278074866310161,
+        "composite_hard": 0.9331550802139037,
+        "composite_soft": 0.9694109798827748,
+        "denominator": 374
+      },
+      "final": {
+        "selected_ids": [],
+        "rerun_count": 0,
+        "rerun_correct": 0,
+        "rerun_execution_failures": 0,
+        "prior_composite_hard": 0.9197860962566845,
+        "composite_hard": 0.9197860962566845,
+        "composite_soft": 0.9602225035576202,
+        "denominator": 374
+      }
+    }
+  },
+  "executions": [
+    {
+      "skill": "best",
+      "id": "45837",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "best",
+      "id": "45842",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    }
+  ],
+  "proxy_route": {
+    "checked_at": "2026-11-06T20:26:10+08:00",
+    "proxy_source": "https_proxy",
+    "proxy_scheme": "http",
+    "explicit_proxy": true,
+    "trust_env": false,
+    "pool_class": "HTTPProxy",
+    "actual_transport_verified": true,
+    "no_proxy_bypass_effective": false
+  },
+  "proxy_requests": [
+    {
+      "time": "2026-11-06T20:26:10+08:00",
+      "task_id": "45837",
+      "attempt_id": "ad2feb9b7dec4699b883db7620c5c7ea",
+      "path": "/v1/chat/completions",
+      "proxy_source": "https_proxy",
+      "proxy_scheme": "http",
+      "proxy_transport": "HTTPProxy",
+      "explicit_proxy": true,
+      "trust_env": false
+    },
+    {
+      "time": "2026-11-06T20:26:10+08:00",
+      "task_id": "45842",
+      "attempt_id": "68f30013c3584fe3978f20a70205ab74",
+      "path": "/v1/chat/completions",
+      "proxy_source": "https_proxy",
+      "proxy_scheme": "http",
+      "proxy_transport": "HTTPProxy",
+      "explicit_proxy": true,
+      "trust_env": false
+    }
+  ],
+  "http_responses": [
+    {
+      "time": "2026-11-06T20:26:16+08:00",
+      "task_id": "45837",
+      "attempt_id": "ad2feb9b7dec4699b883db7620c5c7ea",
+      "status_code": 200,
+      "elapsed_seconds": 6.648,
+      "path": "/v1/chat/completions",
+      "response_headers": {
+        "x-request-id": "64cf413f-65dd-4206-bb7f-16292bb99eab",
+        "via": "1.1 Caddy",
+        "date": "Fri, 06 Nov 2026 12:26:13 GMT",
+        "content-type": "application/json; charset=utf-8"
+      }
+    },
+    {
+      "time": "2026-11-06T20:26:25+08:00",
+      "task_id": "45842",
+      "attempt_id": "68f30013c3584fe3978f20a70205ab74",
+      "status_code": 200,
+      "elapsed_seconds": 15.538,
+      "path": "/v1/chat/completions",
+      "response_headers": {
+        "x-request-id": "d7faeaa8-c6b9-4939-874a-687e9e0babb4",
+        "via": "1.1 Caddy",
+        "date": "Fri, 06 Nov 2026 12:26:15 GMT",
+        "content-type": "application/json; charset=utf-8"
+      }
+    }
+  ],
+  "audited_request_attempts": 2,
+  "composite_execution_failures": {
+    "baseline": 0,
+    "best": 0,
+    "final": 0
+  },
+  "all_nonselected_records_unchanged": true
+}
