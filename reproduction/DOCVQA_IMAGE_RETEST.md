@@ -80,4 +80,17 @@ bash reproduction/benchmark_python.sh docvqa reproduction/retry_docvqa_timeouts.
   --run-root reproduction/outputs/docvqa_timeout_retry_20261106
 ```
 
-与 Key 来源、图片处理、精确替换和超时筛选有关的32项离线检查及 Ruff 均通过。
+与 Key 来源、图片处理、精确替换、超时筛选及 HTTP 诊断脱敏有关的33项离线检查及 Ruff 均通过。
+
+本轮于2026-11-06 19:29:02启动、19:42:43结束（Asia/Shanghai），4条均完成一次重测。
+初始 Skill 的 `45842` 返回 HTTP 200并答对，最优 Skill 的 `58310` 也在重试后答对；
+最优 Skill 的 `45837`、`45842` 仍达到660秒任务超时，按0分保留。
+初始／最优／最终的完整374题 hard 分数现为81.82%／92.78%／91.98%。
+最终 Skill 的全部结果与上轮逐字节一致，其他未选中记录均保持不变。
+
+HTTP 诊断实际记录到网关返回499和504，支持存在服务链路异常的判断；
+仅凭这些状态码不能将原因定位到 Key 本身或具体上游环节。
+本轮完成状态为 `completed_with_errors`，仍有2条执行异常。
+独立报告及脱敏逐题／HTTP 状态记录见
+[`artifacts/docvqa_timeout_retry_20261106/REPORT.md`](artifacts/docvqa_timeout_retry_20261106/REPORT.md)
+及同目录 `recorded_results.json`。

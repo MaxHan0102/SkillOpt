@@ -1,0 +1,152 @@
+{
+  "completed_at": "2026-11-06T19:42:43+08:00",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "credential_source": "reproduction/.env",
+  "summary": {
+    "updated_at": "2026-11-06T19:42:43+08:00",
+    "protocol": "User-authorized second attempt for exactly the four saved timeout occurrences; one fresh evaluation each; retain every new outcome; keep all previous successful records; same images, skills, model, reasoning, seed and timeout; no training or evolution",
+    "test_count": 374,
+    "selected_executions": 4,
+    "verified_executions": 4,
+    "complete": true,
+    "variants": {
+      "baseline": {
+        "selected_ids": [
+          "45842"
+        ],
+        "rerun_count": 1,
+        "rerun_correct": 1,
+        "rerun_execution_failures": 0,
+        "prior_composite_hard": 0.8155080213903744,
+        "composite_hard": 0.8181818181818182,
+        "composite_soft": 0.9080831978828117,
+        "denominator": 374
+      },
+      "best": {
+        "selected_ids": [
+          "58310",
+          "45837",
+          "45842"
+        ],
+        "rerun_count": 3,
+        "rerun_correct": 1,
+        "rerun_execution_failures": 2,
+        "prior_composite_hard": 0.9251336898395722,
+        "composite_hard": 0.9278074866310161,
+        "composite_soft": 0.9640633862998871,
+        "denominator": 374
+      },
+      "final": {
+        "selected_ids": [],
+        "rerun_count": 0,
+        "rerun_correct": 0,
+        "rerun_execution_failures": 0,
+        "prior_composite_hard": 0.9197860962566845,
+        "composite_hard": 0.9197860962566845,
+        "composite_soft": 0.9602225035576202,
+        "denominator": 374
+      }
+    }
+  },
+  "executions": [
+    {
+      "skill": "baseline",
+      "id": "45842",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "best",
+      "id": "58310",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "best",
+      "id": "45842",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    },
+    {
+      "skill": "best",
+      "id": "45837",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    }
+  ],
+  "http_status_counts": {
+    "200": 2,
+    "499": 5,
+    "504": 1
+  },
+  "http_responses": [
+    {
+      "skill": "baseline",
+      "time": "2026-11-06T19:31:41+08:00",
+      "status_code": 200,
+      "elapsed_seconds": 158.982,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:33:37+08:00",
+      "status_code": 499,
+      "elapsed_seconds": 115.057,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:35:59+08:00",
+      "status_code": 499,
+      "elapsed_seconds": 257.232,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:36:45+08:00",
+      "status_code": 504,
+      "elapsed_seconds": 186.37,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:39:04+08:00",
+      "status_code": 499,
+      "elapsed_seconds": 139.218,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:39:28+08:00",
+      "status_code": 200,
+      "elapsed_seconds": 21.544,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:40:13+08:00",
+      "status_code": 499,
+      "elapsed_seconds": 510.468,
+      "path": "/v1/chat/completions"
+    },
+    {
+      "skill": "best",
+      "time": "2026-11-06T19:41:14+08:00",
+      "status_code": 499,
+      "elapsed_seconds": 60.238,
+      "path": "/v1/chat/completions"
+    }
+  ],
+  "audited_request_attempts": 10,
+  "all_nonselected_records_unchanged": true,
+  "final_results_byte_identical_to_previous": true
+}
