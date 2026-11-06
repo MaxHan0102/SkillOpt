@@ -58,3 +58,26 @@ bash reproduction/benchmark_python.sh docvqa reproduction/retest_docvqa_images.p
 可分享的分数及9次逐题状态见
 [`artifacts/docvqa_image_resize_retest_20261106/REPORT.md`](artifacts/docvqa_image_resize_retest_20261106/REPORT.md)
 与同目录 `recorded_results.json`，不含图片、完整轨迹或认证信息。
+
+## 用户要求再次补测超时记录
+
+使用 `retry_docvqa_timeouts.py` 在独立目录
+`reproduction/outputs/docvqa_timeout_retry_20261106/` 对初始 Skill 的 `45842`
+和最优 Skill 的 `58310`、`45837`、`45842` 各重新执行一次。
+上轮已成功的5条记录保留，最终 Skill 的结果保持原样。
+旧超时记录、原始374题结果和第一轮图片补测结果均完整保留。
+
+复用原补测入口，模型、High、seed=42、配置、Skill 和缩放图片均保持不变，
+实际 HTTP Key 继续严格匹配 `.env`。额外只记录 HTTP 状态码和响应耗时，
+不记录认证头或响应体。600秒调用超时／660秒外层任务超时规则不变。
+再次超时或正常答错都保留，不额外选择多次中的最高分。
+第二轮合并结果单独报告，不代表独立全量复测或 avg@5。
+
+```bash
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_docvqa_timeouts.py check \
+  --run-root reproduction/outputs/docvqa_timeout_retry_20261106
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_docvqa_timeouts.py report \
+  --run-root reproduction/outputs/docvqa_timeout_retry_20261106
+```
+
+与 Key 来源、图片处理、精确替换和超时筛选有关的32项离线检查及 Ruff 均通过。
