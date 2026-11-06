@@ -1,0 +1,134 @@
+{
+  "completed_at": "2026-11-06T18:31:08+08:00",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "high",
+  "credential_source": "reproduction/.env",
+  "preprocessing": "If ceil(w/32)*ceil(h/32)>30000, multiply both original dimensions by 0.85 until <=28000 estimated patches; floor dimensions; RGB PNG with LANCZOS; no crop",
+  "summary": {
+    "updated_at": "2026-11-06T18:31:08+08:00",
+    "protocol": "One fresh evaluation per original failed (skill, task); keep every outcome, no best-of selection; retain all 374 tasks; no training, evolution, or changes to previous results",
+    "test_count": 374,
+    "verified_executions": 9,
+    "variants": {
+      "baseline": {
+        "original_hard": 0.8101604278074866,
+        "composite_hard": 0.8155080213903744,
+        "original_soft": 0.90006180750848,
+        "composite_soft": 0.9054094010913678,
+        "retest_correct": 2,
+        "retest_execution_failures": 1,
+        "replaced_ids": [
+          "45837",
+          "58310",
+          "45842"
+        ],
+        "denominator": 374
+      },
+      "best": {
+        "original_hard": 0.9251336898395722,
+        "composite_hard": 0.9251336898395722,
+        "original_soft": 0.9613895895084432,
+        "composite_soft": 0.9613895895084432,
+        "retest_correct": 0,
+        "retest_execution_failures": 3,
+        "replaced_ids": [
+          "45837",
+          "58310",
+          "45842"
+        ],
+        "denominator": 374
+      },
+      "final": {
+        "original_hard": 0.9117647058823529,
+        "composite_hard": 0.9197860962566845,
+        "original_soft": 0.9522011131832885,
+        "composite_soft": 0.9602225035576202,
+        "retest_correct": 3,
+        "retest_execution_failures": 0,
+        "replaced_ids": [
+          "45837",
+          "58310",
+          "45842"
+        ],
+        "denominator": 374
+      }
+    },
+    "complete": true
+  },
+  "executions": [
+    {
+      "skill": "baseline",
+      "id": "45837",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "baseline",
+      "id": "58310",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "baseline",
+      "id": "45842",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    },
+    {
+      "skill": "best",
+      "id": "58310",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    },
+    {
+      "skill": "best",
+      "id": "45837",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    },
+    {
+      "skill": "best",
+      "id": "45842",
+      "hard": 0,
+      "soft": 0.0,
+      "agent_ok": false,
+      "fail_reason": "task-timeout-660s"
+    },
+    {
+      "skill": "final",
+      "id": "45837",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "final",
+      "id": "45842",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    },
+    {
+      "skill": "final",
+      "id": "58310",
+      "hard": 1,
+      "soft": 1.0,
+      "agent_ok": true,
+      "fail_reason": ""
+    }
+  ],
+  "verified_request_attempts": 18,
+  "original_371_rows_preserved_per_variant": true
+}

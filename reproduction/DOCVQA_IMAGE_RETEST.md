@@ -43,3 +43,18 @@ bash reproduction/benchmark_python.sh docvqa reproduction/retest_docvqa_images.p
 与 Key 来源回归检查共27项通过，Ruff 通过。
 
 上游限制参考：[OpenAI Images and vision](https://developers.openai.com/api/docs/guides/images-vision)。
+
+2026-11-06 18:00:50 至18:31:08（Asia/Shanghai）已完成全部9次题目执行。
+初始 Skill 补测2题答对、1题达到官方外层660秒任务超时；最优 Skill 的3题均超时；
+最终 Skill 的3题全部正常返回且答对。超时均按0分保留，整体状态为 `completed_with_errors`。
+因此图片输入限制已被绕过，但本轮并非所有 Skill 都获得无异常评测结果。
+官方配置的单次调用超时为600秒，原生适配器任务外层另加60秒，补测保持该规则。
+
+完整374题的初始／最优／最终 hard 分数由81.02%／92.51%／91.18%
+变为81.55%／92.51%／91.98%；最终 ANLS 由95.22%变为96.02%。
+已核对每个版本的371条未补测记录均未改变、全部374个 ID 覆盖完整、
+逐条均值与汇总一致，实际请求审计均通过 `.env` Key、Terra、High 校验。
+
+可分享的分数及9次逐题状态见
+[`artifacts/docvqa_image_resize_retest_20261106/REPORT.md`](artifacts/docvqa_image_resize_retest_20261106/REPORT.md)
+与同目录 `recorded_results.json`，不含图片、完整轨迹或认证信息。
