@@ -106,3 +106,55 @@ git fetch upstream
 git merge upstream/main
 git push origin main
 ```
+
+## SpreadsheetBench 异常题目单独补测
+
+`retry_spreadsheet_errors.py` 从已完成的稳定性实验中，固定选择
+`item_fingerprints.jsonl` 中 `execution_ok=false` 的 `(轮次, 技能版本, 题目)`。
+普通答错的题目不重测。每次异常执行只补测一次，使用原冻结配置、技能、
+模型、seed 和评分实现；补测仍失败也保留，不取两次结果中的较高分。
+
+```bash
+bash reproduction/benchmark_python.sh spreadsheetbench reproduction/retry_spreadsheet_errors.py prepare \
+  --source-root reproduction/outputs/stability_avg5_20261105 \
+  --run-root reproduction/outputs/spreadsheet_error_retry_20261106
+bash reproduction/benchmark_python.sh spreadsheetbench reproduction/retry_spreadsheet_errors.py start \
+  --run-root reproduction/outputs/spreadsheet_error_retry_20261106
+bash reproduction/benchmark_python.sh spreadsheetbench reproduction/retry_spreadsheet_errors.py status \
+  --run-root reproduction/outputs/spreadsheet_error_retry_20261106
+```
+
+新目录保存固定异常清单、输入和源文件哈希、实际请求参数、HTTP 响应状态、
+逐题轨迹及原始分数副本。仅在补测子进程中为已有 API 主机追加
+`NO_PROXY/no_proxy`，并检查 HTTP 客户端直连，绕过异常本地代理。
+各原始轮次/技能组依次执行，组内并发沿用原配置。
+
+全部补测完成后，`composite/` 和 `rerun_summary.json` 将固定选中的异常
+执行替换为各自一次补测结果，并保留逐项来源。`REPORT.md` 对照展示
+原始 avg@5 和补测合并均值。合并结果使用原始记录和补测记录，
+不能视为重新完成五轮全量实验；原始报告始终保留。
+脚本拒绝重复启动或重用已开始的补测目录，避免意外多次抽样。
+
+DocVQA 和 OfficeQA 使用同一补测协议，通过独立入口启动，例如：
+
+```bash
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_qa_errors.py prepare \
+  --benchmark docvqa --source-root reproduction/outputs/stability_avg5_20261105 \
+  --run-root reproduction/outputs/docvqa_error_retry_20261106
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_qa_errors.py check \
+  --benchmark docvqa --run-root reproduction/outputs/docvqa_error_retry_20261106
+bash reproduction/benchmark_python.sh docvqa reproduction/retry_qa_errors.py start \
+  --benchmark docvqa --run-root reproduction/outputs/docvqa_error_retry_20261106
+```
+
+OfficeQA 将以上命令中的 `docvqa` 换成 `officeqa`。`status` 和 `report`
+动作可查询进度和生成报告。API 连接、502、超时和模型未形成有效输出
+分别统计；后者也反映模型原始表现，不能当作纯网络问题。
+报告同时保留 hard 分数和 DocVQA ANLS / OfficeQA F1 的原始值与补测合并值。
+
+用户要求重新启动 DocVQA 补测时，使用 `restart_docvqa_retry.py` 创建新的
+补测目录，并通过 `prepare --source-root 原稳定性实验目录 --previous-root 上次补测目录
+--run-root 新补测目录` 固定原异常清单。旧目录的结果、日志和失败尝试全部保留，
+不按两次成绩高低选择结果。`check/start/status/report` 接受同一 `--run-root`。
+该入口仅在独立 trial 子进程完成原评分、保存指标与终态后直接退出，取消超时后
+仍阻塞的底层 API 线程，避免 Python 退出时等待线程而拖住后续评测。
