@@ -4,10 +4,12 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import random
 import re
 import statistics
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
+from statistics import mean
 
 from skillopt.envs.task_output import task_output_segment
 
@@ -180,3 +182,31 @@ def aggregate_items(repetitions: list[list[dict]], expected_ids: list[str]) -> t
         report[field + "_variation"] = {"complete_items": len(complete), "varied_items": varied,
                                          "varied_fraction": varied / len(complete) if complete else None}
     return report, items
+
+
+def paired_scores(rounds, score="hard"):
+    ids = list(rounds[0]["none"])
+    by_task = []
+    by_type = defaultdict(list)
+    runs = []
+    for trial in rounds:
+        runs.append({v: sum(r[score] for r in trial[v].values()) / len(ids) for v in ("none", "creator")})
+    for task_id in ids:
+        scores = {v: [t[v][task_id][score] for t in rounds] for v in ("none", "creator")}
+        diff = mean(scores["creator"]) - mean(scores["none"])
+        task_type = rounds[0]["none"][task_id]["task_type"]
+        by_task.append({"id": task_id, "task_type": task_type, **scores, "delta": diff})
+        by_type[task_type].append(diff)
+    deltas = [r["delta"] for r in by_task]
+    rng = random.Random(42)
+    boot = sorted(mean(rng.choices(deltas, k=len(ids))) for _ in range(1000))
+    return {
+        "tasks": len(ids),
+        "repeats": len(rounds),
+        "per_round": runs,
+        "success_rate": {v: mean(r[v] for r in runs) for v in ("none", "creator")},
+        "delta_pp": 100 * mean(deltas),
+        "paired_bootstrap_95_pp": [100 * boot[24], 100 * boot[974]],
+        "by_task_type_delta_pp": {k: 100 * mean(v) for k, v in by_type.items()},
+        "paired_tasks": by_task,
+    }

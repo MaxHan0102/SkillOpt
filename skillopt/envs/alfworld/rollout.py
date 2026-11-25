@@ -24,6 +24,7 @@ TASKS = [
     "pick_cool_then_place_in_recep",
     "pick_clean_then_place_in_recep",
 ]
+SYSTEM_PROMPT = "You are an expert agent operating in the ALFRED Embodied Environment."
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -156,6 +157,8 @@ def run_alfworld_batch(
     diagnostic_mode: bool = False,
     diagnostic_instruction: str = "",
     result_ids: list[str] | None = None,
+    record_model_io: bool = False,
+    raise_on_api_error: bool = False,
 ) -> list[dict]:
     """Run a batch of ALFWorld episodes.
 
@@ -175,7 +178,9 @@ def run_alfworld_batch(
         ...
     ]
 
-    Also saves conversation.json per environment in out_root/predictions/<task_id>/
+    Also saves conversation.json per environment in out_root/predictions/<task_id>/.
+    record_model_io includes each user prompt, raw reply and token usage in that file.
+    raise_on_api_error aborts a batch after exhausted model retries.
     """
     skill_prompt = _build_skill_prompt(skill_content)
 
@@ -224,17 +229,20 @@ def run_alfworld_batch(
 
         # Call API in parallel
         actions = ["None"] * env_num
+        model_io = {}
 
         def call_api(idx):
             try:
-                response, _ = chat_target(
-                    system="You are an expert agent operating in the ALFRED Embodied Environment.",
+                response, usage = chat_target(
+                    system=SYSTEM_PROMPT,
                     user=prompts[idx],
                     max_completion_tokens=max_completion_tokens,
                     retries=5,
                     stage="rollout",
                     timeout=None,
                 )
+                if record_model_io:
+                    model_io[idx] = {"raw_model_response": response, "usage": usage}
                 response = (response or "").strip()
                 if not response:
                     return idx, "<think>empty model response</think><action>look</action>"
@@ -242,6 +250,8 @@ def run_alfworld_batch(
                     return idx, "<think>missing action tag</think><action>look</action>"
                 return idx, response
             except Exception:
+                if raise_on_api_error:
+                    raise
                 return idx, "<think>error</think><action>look</action>"
 
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_api_workers)
@@ -259,11 +269,13 @@ def run_alfworld_batch(
                     try:
                         idx, response = future.result()
                     except Exception:  # noqa: BLE001
+                        if raise_on_api_error:
+                            raise
                         idx = futures[future]
                         response = "<think>error</think><action>look</action>"
                     actions[idx] = response
         finally:
-            executor.shutdown(wait=False, cancel_futures=True)
+            executor.shutdown(wait=raise_on_api_error, cancel_futures=True)
 
         # Save model responses before stepping
         model_responses = {i: actions[i] for i in active_indices}
@@ -282,6 +294,9 @@ def run_alfworld_batch(
                 "reward": float(rewards[i]),
                 "done": bool(dones[i]),
             }
+            if record_model_io:
+                step_record["user_prompt"] = prompts[i]
+                step_record.update(model_io.get(i, {"raw_model_response": None, "usage": {}}))
             conversations[i].append(step_record)
 
         # Update done status
